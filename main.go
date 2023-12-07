@@ -8,4 +8,5 @@ import (
 func main() {
 	fmt.Println("Hello, world!")
 	fmt.Println(one.TestOneExport())
+	one.Run()
 }
