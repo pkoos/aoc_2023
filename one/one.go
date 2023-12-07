@@ -1,5 +1,9 @@
 package one
 
-func TestOne() string {
-	return "Package One works!"
+func TestOneExport() string {
+	return "Exporting the 'one' package works!"
+}
+
+func Calibration_sum() int {
+	return 0
 }

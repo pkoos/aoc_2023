@@ -1,6 +1,8 @@
 package one
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestTheTest(t *testing.T) {
 	one := "one"
