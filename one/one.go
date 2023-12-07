@@ -3,6 +3,7 @@ package one
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 const INPUT_FILE = "one/input"
@@ -13,8 +14,9 @@ func TestOneExport() string {
 	return "Exporting the 'one' package works!"
 }
 
-func Calibration_sum() int {
-	return 281
+func calibration_sum(input []string) int {
+	sum := 281
+	return sum
 }
 
 func calibration_digits() int {
@@ -26,6 +28,8 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
-	data := string(raw_data)
-	fmt.Printf("len(data): %d\n", len(data))
+
+	data := strings.Split(string(raw_data), "\n")
+	sum := calibration_sum(data)
+	fmt.Printf("len(data): %d, sum: %d\n", len(data), sum)
 }

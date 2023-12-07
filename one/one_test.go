@@ -6,8 +6,9 @@ import (
 
 func TestCalibrationSumPartOne(t *testing.T) {
 	// file_name := "test_p1"
+	var data []string
 	expected_sum := 142
-	actual_sum := Calibration_sum() - 139
+	actual_sum := calibration_sum(data) - 139
 	if expected_sum != actual_sum {
 		t.Fatalf("expected: %d, actual: %d\n", expected_sum, actual_sum)
 	}
@@ -15,8 +16,9 @@ func TestCalibrationSumPartOne(t *testing.T) {
 
 func TestCalibrationSumPartTwo(t *testing.T) {
 	// file_name := "test_p2"
+	var data []string
 	expected_sum := 281
-	actual_sum := Calibration_sum()
+	actual_sum := calibration_sum(data)
 	if expected_sum != actual_sum {
 		t.Fatalf("expected: %d, actual: %d\n", expected_sum, actual_sum)
 	}
