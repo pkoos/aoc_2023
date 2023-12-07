@@ -2,6 +2,8 @@ package one
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 
 	"aoc_2023/utils"
 )
@@ -15,22 +17,35 @@ func TestOneExport() string {
 }
 
 func calibration_sum(input []string) int {
+	var sum int
 	for _, line := range input {
 		digits := calibration_digits(line)
-		fmt.Printf("digits: %d\n", digits)
+		sum += digits
 	}
-
-	sum := 281
 	return sum
 }
 
 func calibration_digits(line string) int {
-	fmt.Printf("calibration_digits input: %s\n", line)
-	return 12
+	first, last := number_digits(line)
+	digits := first * 10 + last
+	return digits
+}
+
+func number_digits(line string) (int, int) {
+	first := strings.IndexAny(line, "123456789")
+	last := strings.LastIndexAny(line, "123456789")
+	if last == -1 { last = first }
+	first_val, err_first := strconv.Atoi(string(line[first]))
+	last_val, err_last := strconv.Atoi(string(line[last]))
+	if err_first != nil || err_last != nil {
+		return -1, -1
+	}
+
+	return first_val, last_val
 }
 
 func Run() {
-	data, err := utils.Slice_file(TEST_P1_FILE)
+	data, err := utils.Slice_file(INPUT_FILE)
 	if err != nil {
 		panic(err)
 	}

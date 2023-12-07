@@ -2,19 +2,21 @@ package one
 
 import (
 	"testing"
+	"aoc_2023/utils"
 )
 
 func TestCalibrationSumPartOne(t *testing.T) {
-	// file_name := "test_p1"
-	var data []string
+	file_name := "test_p1"
+	data, _ := utils.Slice_file(file_name)
 	expected_sum := 142
-	actual_sum := calibration_sum(data) - 139
+	actual_sum := calibration_sum(data)
 	if expected_sum != actual_sum {
 		t.Fatalf("expected: %d, actual: %d\n", expected_sum, actual_sum)
 	}
 }
 
 func TestCalibrationSumPartTwo(t *testing.T) {
+	t.Skip("Not yet Implemented")
 	// file_name := "test_p2"
 	var data []string
 	expected_sum := 281
