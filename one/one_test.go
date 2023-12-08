@@ -6,11 +6,25 @@ import (
 	"aoc_2023/utils"
 )
 
-func TestCalibrationSumP1(t *testing.T) { t.Skip("Not yet implemented.") }
+func TestCalibrationSum(t *testing.T) { t.Skip("Not yet implemented.") }
 
-func TestCalibrationDigitsP1(t *testing.T) { t.Skip("Not yet implemented.") }
+func TestCalibrationDigits(t *testing.T) { 
+	data, _ := utils.String_slice_file("test_input")
+	expecteds, _ := utils.Int_slice_file("test_digits")
+	if len(data) != len(expecteds) {
+		t.Fatalf("test is broken, test files len(data): %d, len(expecteds): %d\n", 
+			len(data), len(expecteds))
+	}
 
-func TestCalibrationDigitsP2(t *testing.T) { t.Skip("Not yet implemented.") }
+	for idx, line := range data {
+		value := calibration_digits(line)
+		expected := expecteds[idx]
+
+		if value != expected {
+			t.Errorf("line: %s, expected: %d, actual: %d\n", line, expected, value)
+		}
+	}
+}
 
 func TestFindDigits(t *testing.T) {
 	data, _ := utils.String_slice_file("test_input")

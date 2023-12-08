@@ -44,6 +44,7 @@ func calibration_sum(input []string) int {
 func calibration_digits(line string) int {
 	first, last := find_digits(line)
 	digits := first * 10 + last
+
 	return digits
 }
 
