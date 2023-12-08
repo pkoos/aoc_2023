@@ -1,23 +1,18 @@
 package one
 
 import (
-	// "fmt"
 	"testing"
 
 	"aoc_2023/utils"
 )
 
-func TestCalibrationSumP1(t *testing.T) {
-	t.Skip("Not yet implemented.")
-}
+func TestCalibrationSumP1(t *testing.T) { t.Skip("Not yet implemented.") }
 
-func TestCalibrationDigitsP1(t *testing.T) {
-	t.Skip("Not yet implemented.")
-}
+func TestCalibrationDigitsP1(t *testing.T) { t.Skip("Not yet implemented.") }
 
-func TestFindDigits(t *testing.T) {
-	t.Skip("Not yet implemented.")
-}
+func TestCalibrationDigitsP2(t *testing.T) { t.Skip("Not yet implemented.") }
+
+func TestFindDigits(t *testing.T) { t.Skip("Not yet implemented.") }
 
 func TestFindFirst(t *testing.T) {
 	data, _ := utils.String_slice_file("test_input")
@@ -41,7 +36,8 @@ func TestFirstNumber(t *testing.T) {
 	expected_vals, _ := utils.Int_slice_file("test_first_number")
 	
 	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
-		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", 
+			len(data), len(expected_idxs), len(expected_vals))
 	}
 
 	for idx, line := range data {
@@ -50,7 +46,8 @@ func TestFirstNumber(t *testing.T) {
 		expected_val := expected_vals[idx]
 
 		if first.Index != expected_idx || first.Value != expected_val {
-			t.Errorf("line: %s, index (e:%d, a:%d) value: (e: %d, a:%d)\n", line, expected_idx, first.Index, expected_val, first.Value)
+			t.Errorf("line: %s, index (e:%d, a:%d) value: (e: %d, a:%d)\n", 
+				line, expected_idx, first.Index, expected_val, first.Value)
 		}
 	}
 }
@@ -62,7 +59,8 @@ func TestFirstString(t *testing.T) {
 	expected_vals, _ := utils.Int_slice_file("test_first_string")
 
 	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
-		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", 
+			len(data), len(expected_idxs), len(expected_vals))
 	}
 
 	for idx, line := range data {
@@ -71,7 +69,8 @@ func TestFirstString(t *testing.T) {
 		expected_val := expected_vals[idx]
 
 		if first.Index != expected_idx || first.Value != expected_val {
-			t.Errorf("line: %s, index (e:%d, a:%d) value: (e: %d, a:%d)\n", line, expected_idx, first.Index, expected_val, first.Value)
+			t.Errorf("line: %s, index (e:%d, a:%d) value: (e: %d, a:%d)\n", 
+				line, expected_idx, first.Index, expected_val, first.Value)
 		}
 	}
 }
@@ -84,7 +83,8 @@ func TestLastNumber(t *testing.T) {
 	expected_idxs, _ := utils.Int_slice_file("test_last_number_index")
 	expected_vals, _ := utils.Int_slice_file("test_last_number")
 	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
-		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", 
+			len(data), len(expected_idxs), len(expected_vals))
 	}
 
 	for idx, line := range data {
@@ -105,7 +105,8 @@ func TestLastString(t *testing.T) {
 	expected_vals, _ := utils.Int_slice_file("test_last_string")
 
 	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
-		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", 
+			len(data), len(expected_idxs), len(expected_vals))
 	}
 
 	for idx, line := range data {
@@ -114,7 +115,8 @@ func TestLastString(t *testing.T) {
 		expected_val := expected_vals[idx]
 
 		if last.Index != expected_idx || last.Value != expected_val {
-			t.Errorf("%d: line: %s, index(e:%d, a:%d), value: (e:%d, a:%d)\n", idx, line, expected_idx, last.Index, expected_val, last.Value)
+			t.Errorf("%d: line: %s, index(e:%d, a:%d), value: (e:%d, a:%d)\n", 
+				idx, line, expected_idx, last.Index, expected_val, last.Value)
 		}
 	}
 }
