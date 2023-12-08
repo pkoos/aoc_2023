@@ -18,7 +18,8 @@ func TestFindFirst(t *testing.T) {
 	data, _ := utils.String_slice_file("test_input")
 	expecteds, _ := utils.Int_slice_file("test_first")
 	if len(data) != len(expecteds) {
-		t.Fatalf("test is broken, test files len(data): %d, len(expecteds): %d\n", len(data), len(expecteds))
+		t.Fatalf("test is broken, test files len(data): %d, len(expecteds): %d\n", 
+			len(data), len(expecteds))
 	}
 
 	for idx, line := range data {
@@ -75,7 +76,20 @@ func TestFirstString(t *testing.T) {
 	}
 }
 func TestFindLast(t *testing.T) {
-	t.Skip("Not yet implemented.")
+	data, _ := utils.String_slice_file("test_input")
+	expecteds, _ := utils.Int_slice_file("test_last")	
+	if len(data) != len(expecteds) {
+		t.Fatalf("test is broken, test files len(data): %d, len(expecteds): %d\n", 
+			len(data), len(expecteds))
+	}
+
+	for idx, line := range data {
+		value := find_last(line)
+		expected := expecteds[idx]
+		if value != expected {
+			t.Errorf("line: %s, expected: %d, actual: %d\n", line, expected, value)
+		}
+	}
 }
 
 func TestLastNumber(t *testing.T) {
