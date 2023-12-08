@@ -4,9 +4,18 @@ import (
 	"testing"
 
 	"aoc_2023/utils"
+	"github.com/spatialcurrent/go-math/pkg/math"
 )
 
-func TestCalibrationSum(t *testing.T) { t.Skip("Not yet implemented.") }
+func TestCalibrationSum(t *testing.T) {
+	data, _ := utils.String_slice_file("test_input")
+	digits, _ := utils.Int_slice_file("test_digits")
+	sum := calibration_sum(data)
+	expected, _ := math.Sum(digits)
+	if sum != expected {
+		t.Errorf("expected: %d, actual: %d\n", expected, sum)
+	}
+}
 
 func TestCalibrationDigits(t *testing.T) { 
 	data, _ := utils.String_slice_file("test_input")
