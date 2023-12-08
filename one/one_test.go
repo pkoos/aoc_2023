@@ -12,7 +12,24 @@ func TestCalibrationDigitsP1(t *testing.T) { t.Skip("Not yet implemented.") }
 
 func TestCalibrationDigitsP2(t *testing.T) { t.Skip("Not yet implemented.") }
 
-func TestFindDigits(t *testing.T) { t.Skip("Not yet implemented.") }
+func TestFindDigits(t *testing.T) {
+	data, _ := utils.String_slice_file("test_input")
+	expecteds, _ := utils.Int_slice_file("test_last")
+
+	if len(data) != len(expecteds) {
+		t.Fatalf("test is broken, test files len(data): %d, len(expecteds): %d\n", 
+			len(data), len(expecteds))
+	}
+
+	for idx, line := range data {
+		value := find_last(line)
+		expected := expecteds[idx]
+
+		if value != expected {
+			t.Errorf("line: %s, expected: %d, actual: %d\n", line, expected, value)
+		}
+	}
+}
 
 func TestFindFirst(t *testing.T) {
 	data, _ := utils.String_slice_file("test_input")
