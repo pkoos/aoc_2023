@@ -1,109 +1,120 @@
 package one
 
 import (
+	// "fmt"
 	"testing"
+
 	"aoc_2023/utils"
 )
 
-func TestCalibrationSumPartOne(t *testing.T) {
-	file_name := "test_p1"
-	data, _ := utils.Slice_file(file_name)
-	expected_sum := 142
-	actual_sum := calibration_sum(data)
-	if expected_sum != actual_sum {
-		t.Fatalf("expected: %d, actual: %d\n", expected_sum, actual_sum)
-	}
-}
-
-func TestCalibrationSumPartTwo(t *testing.T) {
-	t.Skip("Not yet Implemented")
-	// file_name := "test_p2"
-	var data []string
-	expected_sum := 281
-	actual_sum := calibration_sum(data)
-	if expected_sum != actual_sum {
-		t.Fatalf("expected: %d, actual: %d\n", expected_sum, actual_sum)
-	}
+func TestCalibrationSumP1(t *testing.T) {
+	t.Skip("Not yet implemented.")
 }
 
 func TestCalibrationDigitsP1(t *testing.T) {
-	line1 := "1abc2"
-	expected1 := 12
-	actual1 := calibration_digits(line1)
-	if expected1 != actual1 {
-		t.Errorf("expected: %d, actual: %d\n", expected1, actual1)
+	t.Skip("Not yet implemented.")
+}
+
+func TestFindDigits(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
+func TestFindFirst(t *testing.T) {
+	data, _ := utils.String_slice_file("test_input")
+	expecteds, _ := utils.Int_slice_file("test_first")
+	if len(data) != len(expecteds) {
+		t.Fatalf("test is broken, test files len(data): %d, len(expecteds): %d\n", len(data), len(expecteds))
 	}
 
-	line2 := "pqr3stu8vwx"
-	expected2 := 38
-	actual2 := calibration_digits(line2)
-	if expected2 != actual2 {
-		t.Errorf("expected: %d, actual: %d\n", expected2, actual2)
-	}
-
-	line3 := "a1b2c3d4e5f"
-	expected3 := 15
-	actual3 := calibration_digits(line3)
-	if expected3 != actual3 {
-		t.Errorf("expected: %d, actual: %d\n", expected3, actual3)
-	}
-
-	line4 := "treb7uchet"
-	expected4 := 77
-	actual4 := calibration_digits(line4)
-	if expected4 != actual4 {
-		t.Errorf("expected: %d, actual: %d\n", expected4, actual4)
+	for idx, line := range data {
+		value := find_first(line)
+		expected := expecteds[idx]
+		if value != expected {
+			t.Errorf("line: %s, expected: %d, actual: %d\n", line, expected, value)
+		}
 	}
 }
 
-func TestCalibrationDigitsP2(t *testing.T) {
-	t.Skip("Not yet implemented")
-	line5 := "two1nine"
-	expected5 := 29
-	actual5 := calibration_digits(line5)
-	if expected5 != actual5 {
-		t.Errorf("expected: %d, actual: %d\n", expected5, actual5)
+func TestFirstNumber(t *testing.T) {
+	data, _ := utils.String_slice_file("test_input")
+	expected_idxs, _ := utils.Int_slice_file("test_first_number_index")
+	expected_vals, _ := utils.Int_slice_file("test_first_number")
+	
+	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
 	}
 
-	line6 := "eightwothree"
-	expected6 := 83
-	actual6 := calibration_digits(line6)
-	if expected6 != actual6 {
-		t.Errorf("expected: %d, actual: %d\n", expected6, actual6)
+	for idx, line := range data {
+		first := first_number(line)
+		expected_idx := expected_idxs[idx]
+		expected_val := expected_vals[idx]
+
+		if first.Index != expected_idx || first.Value != expected_val {
+			t.Errorf("line: %s, index (e:%d, a:%d) value: (e: %d, a:%d)\n", line, expected_idx, first.Index, expected_val, first.Value)
+		}
+	}
+}
+
+func TestFirstString(t *testing.T) {
+	// t.Skip("Not yet implemented.")
+	data, _ := utils.String_slice_file("test_input")
+	expected_idxs, _ := utils.Int_slice_file("test_first_string_index")
+	expected_vals, _ := utils.Int_slice_file("test_first_string")
+
+	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
 	}
 
-	line7 := "abcone2threexyz"
-	expected7 := 13
-	actual7 := calibration_digits(line7)
-	if expected7 != actual7 {
-		t.Errorf("expected: %d, actual: %d\n", expected7, actual7)
+	for idx, line := range data {
+		first := first_string(line)
+		expected_idx := expected_idxs[idx]
+		expected_val := expected_vals[idx]
+
+		if first.Index != expected_idx || first.Value != expected_val {
+			t.Errorf("line: %s, index (e:%d, a:%d) value: (e: %d, a:%d)\n", line, expected_idx, first.Index, expected_val, first.Value)
+		}
+	}
+}
+func TestFindLast(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
+func TestLastNumber(t *testing.T) {
+	data, _ := utils.String_slice_file("test_input")
+	expected_idxs, _ := utils.Int_slice_file("test_last_number_index")
+	expected_vals, _ := utils.Int_slice_file("test_last_number")
+	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
 	}
 
-	line8 := "xtwone3four"
-	expected8 := 24
-	actual8 := calibration_digits(line8)
-	if expected8 != actual8 {
-		t.Errorf("expected: %d, actual: %d\n", expected8, actual8)
+	for idx, line := range data {
+		last := last_number(line)
+		
+		expected_idx := expected_idxs[idx]
+		expected_val := expected_vals[idx]
+		if last.Index != expected_idx || last.Value != expected_val {
+			t.Errorf("line: %s, index (e:%d, a:%d) value: (e: %d, a:%d)\n", 
+				line, expected_idx, last.Index, expected_val, last.Value)
+		}
+	}
+}
+
+func TestLastString(t *testing.T) {
+	data, _ := utils.String_slice_file("test_input")
+	expected_idxs, _ := utils.Int_slice_file("test_last_string_index")
+	expected_vals, _ := utils.Int_slice_file("test_last_string")
+
+	if len(data) != len(expected_idxs) || len(data) != len(expected_vals) {
+		t.Fatalf("test is broken, test files len(data): %d, len(idxs): %d, len(vals): %d\n", len(data), len(expected_idxs), len(expected_vals))
 	}
 
-	line9 := "4nineeightseven2"
-	expected9 := 42
-	actual9 := calibration_digits(line9)
-	if expected9 != actual9 {
-		t.Errorf("expected: %d, actual: %d\n", expected9, actual9)
-	}
+	for idx, line := range data {
+		last := last_string(line)
+		expected_idx := expected_idxs[idx]
+		expected_val := expected_vals[idx]
 
-	line10 := "zoneight234"
-	expected10 := 52
-	actual10 := calibration_digits(line10)
-	if expected10 != actual10 {
-		t.Errorf("expected: %d, actual: %d\n", expected10, actual10)
-	}
-
-	line11 := "7pqrstsixteen"
-	expected11 := 76
-	actual11 := calibration_digits(line11)
-	if expected11 != actual11 {
-		t.Errorf("expected: %d, actual: %d\n", expected11, actual11)
+		if last.Index != expected_idx || last.Value != expected_val {
+			t.Errorf("%d: line: %s, index(e:%d, a:%d), value: (e:%d, a:%d)\n", idx, line, expected_idx, last.Index, expected_val, last.Value)
+		}
 	}
 }
