@@ -156,19 +156,6 @@ func find_digits(line string) (int, int) {
 	return find_first(line), find_last(line)
 }
 
-func number_digits(line string) (int, int) {
-	first := strings.IndexAny(line, "123456789")
-	last := strings.LastIndexAny(line, "123456789")
-	if last == -1 { last = first }
-	first_val, err_first := strconv.Atoi(string(line[first]))
-	last_val, err_last := strconv.Atoi(string(line[last]))
-	if err_first != nil || err_last != nil {
-		return -1, -1
-	}
-
-	return first_val, last_val
-}
-
 func Run() {
 	data, err := utils.String_slice_file(INPUT_FILE)
 	if err != nil {
