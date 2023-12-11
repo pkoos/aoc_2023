@@ -11,6 +11,8 @@ const MAX_RED = 12
 const MAX_GREEN = 13
 const MAX_BLUE = 14
 
+var MAX_ROUND = Game_round{MAX_RED, MAX_GREEN, MAX_BLUE}
+
 type Game struct {
 	ID int
 	Blue int
@@ -18,7 +20,16 @@ type Game struct {
 	Red int
 }
 
-func a_sum_function_of_some_type(data []string) int {
+type Game_round struct {
+	Red int
+	Green int
+	Blue int
+}
+
+func sum_ids(data []string) int {
+	for _, line := range data {
+		_ = line
+	}
 	return 0
 }
 
@@ -27,6 +38,6 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
-	sum := a_sum_function_of_some_type(data)
+	sum := sum_ids(data)
 	fmt.Printf("Final Sum: %d\n", sum)
 }
