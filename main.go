@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"aoc_2023/one"
+	"aoc_2023/two"
 )
 
 func main() {
-	fmt.Println("Hello, world!")
-	fmt.Println(one.TestOneExport())
 	one.Run()
+	two.Run()
 }

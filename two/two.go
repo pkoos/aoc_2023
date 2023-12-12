@@ -132,5 +132,5 @@ func Run() {
 		panic(err)
 	}
 	sum := sum_ids(data)
-	fmt.Printf("Final Sum: %d\n", sum)
+	fmt.Printf("Final Sum day 2 Part One: %d\n", sum)
 }
