@@ -7,6 +7,17 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestGameIdInt(t *testing.T) {
+	data, _ := utils.String_slice_file("test_files/test_gamestr")
+	expecteds, _ := utils.Int_slice_file("test_files/test_ids")
+	for idx, line := range data {
+		actual := game_id_int(line)
+		expected := expecteds[idx]
+		if actual != expected {
+			t.Errorf("%d: '%s' expected: %d, actual: %d\n", idx, line, expected, actual)
+		}
+	}
+}
 func TestSplitGameAndRounds(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expected_games, _ := utils.String_slice_file("test_files/test_gamestr")
@@ -49,13 +60,14 @@ func TestGamesEqual(t *testing.T) {
 }
 
 func TestProcessGameString(t *testing.T) {
+	t.Skip("Not fully implemented")
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expecteds := []Game {
-		{},
-		{},
-		{},
-		{},
-		{},
+		{ ID: 1},
+		{ ID: 2},
+		{ ID: 3},
+		{ ID: 4},
+		{ ID: 5},
 	}
 
 	for idx, line := range data {

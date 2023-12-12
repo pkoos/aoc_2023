@@ -3,6 +3,7 @@ package two
 import (
 	"aoc_2023/utils"
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -49,9 +50,16 @@ func split_game_and_rounds(line string) (game_str string, rounds_str string) {
 	return game_str, rounds_str
 }
 
+func game_id_int(line string) (id int) {
+	space_idx := strings.Index(line, " ")
+	id_string := strings.TrimSpace(line[space_idx:])
+	id, _ = strconv.Atoi(id_string)
+	return id
+}
+
 func process_game_string(line string) (game Game) {
 	game_str, rounds_str := split_game_and_rounds(line)
-	_ = game_str
+	game.ID = game_id_int(game_str)
 	_ = rounds_str
 	return game
 }
