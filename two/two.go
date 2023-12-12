@@ -3,6 +3,7 @@ package two
 import (
 	"aoc_2023/utils"
 	"fmt"
+	"strings"
 )
 
 const INPUT_FILE = "two/input"
@@ -40,7 +41,18 @@ type Game_round struct {
 	Blue int
 }
 
-func process_game_string(data string) (game Game) {
+func split_game_and_rounds(line string) (game_str string, rounds_str string) {
+	data := strings.Split(line, ":")
+	game_str = data[0]
+	rounds_str = data[1]
+
+	return game_str, rounds_str
+}
+
+func process_game_string(line string) (game Game) {
+	game_str, rounds_str := split_game_and_rounds(line)
+	_ = game_str
+	_ = rounds_str
 	return game
 }
 

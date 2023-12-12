@@ -7,6 +7,21 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestSplitGameAndRounds(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected_games, _ := utils.String_slice_file("test_files/test_gamestr")
+	expected_rounds, _ := utils.String_slice_file("test_files/test_roundstr")
+	for idx, line := range data {
+		actual_game, actual_round := split_game_and_rounds(line)
+		expected_game := expected_games[idx]
+		expected_round := expected_rounds[idx]
+		if actual_game != expected_game && actual_round != expected_round {
+			t.Errorf("%d: '%s', expected: ('%s', '%s'), actual: ('%s', '%s')\n", 
+				idx, line, expected_game, expected_round, actual_game, actual_round)
+		}
+	}
+}
+
 func TestGamesEqual(t *testing.T) {
 	test_game1 := Game{
 		ID: 14,
