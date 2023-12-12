@@ -8,7 +8,18 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestIsPossible(t *testing.T) {
+	data, _ := utils.String_slice_file("test_files/test_roundstr")
+	expecteds := []bool { true, true, false, false, true }
 
+	for idx, line := range data {
+		actual := is_possible(process_all_rounds(line))
+		expected := expecteds[idx]
+		if actual != expected {
+			t.Errorf("%d: '%s', expected: %t, actual: %t\n", idx, line, expected, actual)
+		}
+	}
+}
 
 func TestColorValue(t *testing.T) {
 	data, _ := utils.String_slice_file("test_files/test_colorval")
@@ -51,7 +62,6 @@ func TestProcessOneRound(t *testing.T) {
 }
 
 func TestProcessAllRounds(t *testing.T) {
-	// t.Skip("Not yet fully implemented")
 	data, _ := utils.String_slice_file("test_files/test_roundstr")
 	expecteds := [][]Game_round{
 		{{4, 0, 3}, {1, 2, 6}, {0, 2, 0}},
@@ -145,6 +155,7 @@ func TestProcessGameString(t *testing.T) {
 }
 
 func TestSumIds(t *testing.T) { 
+	t.Skip("Not Yet Implemented") 
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expected := 0
 	// expected := 8
@@ -152,6 +163,4 @@ func TestSumIds(t *testing.T) {
 	if actual != expected {
 		t.Errorf("expected: %d, actual :%d\n", expected, actual)
 	}
-
-	t.Skip("Not Yet Implemented") 
 }

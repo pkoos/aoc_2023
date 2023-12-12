@@ -99,10 +99,20 @@ func game_id_int(line string) (id int) {
 	return id
 }
 
+func is_possible(rounds []Game_round) bool {
+	for _, round := range rounds {
+		if round.Red > MAX_RED || round.Green > MAX_GREEN || round.Blue > MAX_BLUE {
+			return false
+		}
+	}
+	return true	
+}
+
 func process_game_string(line string) (game Game) {
 	game_str, rounds_str := split_game_and_rounds(line)
 	game.ID = game_id_int(game_str)
 	game.Rounds = process_all_rounds(rounds_str)
+	game.Is_possible = is_possible(game.Rounds)
 
 	return game
 }
