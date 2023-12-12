@@ -155,10 +155,9 @@ func TestProcessGameString(t *testing.T) {
 }
 
 func TestSumIds(t *testing.T) { 
-	t.Skip("Not Yet Implemented") 
+	// t.Skip("Not Yet Implemented") 
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
-	expected := 0
-	// expected := 8
+	expected := 8
 	actual := sum_ids(data)
 	if actual != expected {
 		t.Errorf("expected: %d, actual :%d\n", expected, actual)
