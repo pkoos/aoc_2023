@@ -1,7 +1,6 @@
 package three
 
 import (
-	"fmt"
 	"testing"
 
 	"aoc_2023/utils"
@@ -9,11 +8,15 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
-func TestSumParts(t *testing.T) {
-	
+func TestSumPartNumbers(t *testing.T) {
+	// t.Skip("Not yet implemented.")
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
-	for idx, line := range data {
-		fmt.Printf("%d: %s\n", idx, line)
+	// data, _ := utils.String_slice_file(INPUT_FILE)
+	// expected := 0
+	expected := 4361
+	actual := sum_part_numbers((data))
+	if expected != actual {
+		t.Errorf("expected: %d, actual: %d\n", expected, actual)
 	}
 	t.Skip("Not yet implemented")
 }
