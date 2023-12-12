@@ -1,11 +1,76 @@
 package two
 
 import (
-	"testing"
 	"aoc_2023/utils"
+	"strings"
+	"testing"
 )
 
 const TEST_INPUT_FILE = "test_files/test_input"
+
+
+
+func TestColorValue(t *testing.T) {
+	data, _ := utils.String_slice_file("test_files/test_colorval")
+	expecteds := []Color_val{
+		{"blue", 3},  {"red", 4},   {"red", 1},   {"green", 2},  {"blue", 6}, 
+		{"green", 2}, {"blue", 1},  {"green", 2}, {"green", 3},  {"blue", 4}, 
+		{"red", 1},   {"green", 1}, {"blue", 1},  {"green", 8},  {"blue", 6}, 
+		{"red", 20},  {"blue", 5},  {"red", 4},   {"green", 13}, {"green", 5}, 
+		{"red", 1},   {"green", 1}, {"red", 3},   {"blue", 6},   {"green", 3}, 
+		{"red", 6},   {"green", 3}, {"blue", 15}, {"red", 14},   {"red", 6}, 
+		{"blue", 1},  {"green", 3},  {"blue", 2},  {"red", 1},   {"green", 2},
+	}
+	for idx, line := range data {
+		expected := expecteds[idx]
+		actual := color_value(line)
+		if expected.name != actual.name && expected.value != actual.value {
+			t.Errorf("%d: '%s', expected: %+v, actual: %+v\n", idx, line, expected, actual)
+		}
+	}
+}
+func TestProcessOneRound(t *testing.T) {
+	data, _ := utils.String_slice_file("test_files/test_roundstr")
+	expecteds := [][]Game_round{
+		{{4, 0, 3}, {1, 2, 6}, {0, 2, 0}},
+		{{0, 2, 1}, {1, 3, 4}, {0, 1, 1}},
+		{{20, 8, 6}, {4, 13, 5}, {1, 5, 0}},
+		{{3, 1, 6}, {6, 3, 0}, {14, 3, 15}},
+		{{6, 3, 1}, {1, 2, 2}},
+	}
+	for game_idx, line := range data {
+		line_data := strings.Split(line, ";")
+		for round_idx, round_data := range line_data {
+			actual := process_one_round(round_data)
+			expected := expecteds[game_idx][round_idx]
+			if actual != expected {
+				t.Errorf("[%d][%d]: '%s', expected: %+v, actual: %+v\n", game_idx, round_idx, line, expected, actual )
+			}
+		}
+	}
+}
+
+func TestProcessAllRounds(t *testing.T) {
+	t.Skip("Not yet fully implemented")
+	data, _ := utils.String_slice_file("test_files/test_roundstr")
+	expecteds := [][]Game_round{
+		{{4, 0, 3}, {1, 2, 6}, {0, 2, 6}},
+		{{0, 2, 1}, {1, 3, 4}, {0, 1, 1}},
+		{{20, 8, 6}, {4, 13, 5}, {1, 5, 0}},
+		{{3, 1, 6}, {6, 3, 0}, {14, 3, 15}},
+		{{6, 3, 1}, {1, 2, 2}},
+	}
+	for idx, line := range data {
+		expected_rounds :=expecteds[idx]
+		actual_rounds := process_all_rounds(line)
+		for idx_2, actual := range actual_rounds {
+			expected := expected_rounds[idx_2]
+			if actual != expected {
+				t.Errorf("[%d][%d]: '%s', expected: %+v, actual: %+v\n", idx, idx_2, line, expected, actual)
+			}
+		}
+	}
+}
 
 func TestGameIdInt(t *testing.T) {
 	data, _ := utils.String_slice_file("test_files/test_gamestr")
