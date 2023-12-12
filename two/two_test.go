@@ -8,10 +8,21 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestMinGameProduct(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expecteds, _ := utils.Int_slice_file("test_files/test_products")
+	for idx, line := range data {
+		expected := expecteds[idx]
+		actual := min_game_product(process_game_string(line))
+		if expected != actual {
+			t.Errorf("%d: '%s', expected: %d, actual: %d\n", idx, line, expected, actual)
+		}
+	}
+}
+
 func TestSumProducts(t *testing.T) {
-	data, _ := utils.String_slice_file("test_files/test_input")
-	// expected := 2286
-	expected := 0
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected := 2286
 	actual := sum_products(data)
 	if expected != actual {
 		t.Errorf("expected: %d, actual: %d\n", expected, actual)

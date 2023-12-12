@@ -126,8 +126,21 @@ func sum_ids(data []string) (sum int) {
 	return sum
 }
 
-func min_game_product(game Game) (product int) {
-	return product
+func min_game_product(game Game) (int) {
+	var min_round Game_round
+
+	for _, round := range game.Rounds {
+		if min_round.Red == 0 || round.Red > min_round.Red {
+			min_round.Red = round.Red
+		}
+		if min_round.Green == 0 || round.Green > min_round.Green {
+			min_round.Green = round.Green
+		}
+		if min_round.Blue == 0 || round.Blue > min_round.Blue {
+			min_round.Blue = round.Blue
+		}
+	}
+	return min_round.Red * min_round.Green * min_round.Blue
 }
 
 func sum_products(data []string) (sum int) {
