@@ -8,6 +8,16 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestSumProducts(t *testing.T) {
+	data, _ := utils.String_slice_file("test_files/test_input")
+	// expected := 2286
+	expected := 0
+	actual := sum_products(data)
+	if expected != actual {
+		t.Errorf("expected: %d, actual: %d\n", expected, actual)
+	}
+}
+
 func TestIsPossible(t *testing.T) {
 	data, _ := utils.String_slice_file("test_files/test_roundstr")
 	expecteds := []bool { true, true, false, false, true }

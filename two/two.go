@@ -126,6 +126,18 @@ func sum_ids(data []string) (sum int) {
 	return sum
 }
 
+func min_game_product(game Game) (product int) {
+	return product
+}
+
+func sum_products(data []string) (sum int) {
+	for _, line := range data {
+		game := process_game_string(line)
+		sum += min_game_product(game)
+	}
+	return sum
+}
+
 func Run() {
 	data, err := utils.String_slice_file(INPUT_FILE)
 	if err != nil {
@@ -133,4 +145,7 @@ func Run() {
 	}
 	sum := sum_ids(data)
 	fmt.Printf("Final Sum day 2 Part One: %d\n", sum)
+
+	sum_prod := sum_products(data)
+	fmt.Printf("Final Sum day 2 Part Two: %d\n", sum_prod)
 }
