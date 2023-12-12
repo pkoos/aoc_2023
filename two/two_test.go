@@ -51,10 +51,10 @@ func TestProcessOneRound(t *testing.T) {
 }
 
 func TestProcessAllRounds(t *testing.T) {
-	t.Skip("Not yet fully implemented")
+	// t.Skip("Not yet fully implemented")
 	data, _ := utils.String_slice_file("test_files/test_roundstr")
 	expecteds := [][]Game_round{
-		{{4, 0, 3}, {1, 2, 6}, {0, 2, 6}},
+		{{4, 0, 3}, {1, 2, 6}, {0, 2, 0}},
 		{{0, 2, 1}, {1, 3, 4}, {0, 1, 1}},
 		{{20, 8, 6}, {4, 13, 5}, {1, 5, 0}},
 		{{3, 1, 6}, {6, 3, 0}, {14, 3, 15}},
