@@ -41,15 +41,9 @@ func find_symbols(data []string, symbols string) (found []symbol_coordinates) {
 	for r_idx, line := range data {
 		for c_idx, val := range line {
 			s_idx := strings.IndexAny(string(val), symbols)
-			// is_symbol := strings.Contains(SYMBOLS, string(val))
 			if s_idx != -1 {
 				found = append(found, symbol_coordinates{string(val), r_idx, c_idx})
 			}
-			// if is_symbol {
-			// 	found = append(found, symbol_coordinates{string(val), r_idx, c_idx})
-			// }
-			
-			// 	r_idx, c_idx, string(val), is_symbol)
 		}
 	}
 	return found
@@ -126,37 +120,9 @@ func find_specific_partnum(digit digit_coordinates, parts []part_number) (found_
 	return found_part
 }
 
-// func find_gear_ratios(data []string, symbols []symbol_coordinates)(ratios []gear_ratio) {
-// 	var working_gear gear_ratio
-// 	for _, symbol := range symbols {
-// 		r_min := symbol.Row -1
-// 		r_max := symbol.Row +1
-// 		c_min := symbol.Col -1
-// 		c_max := symbol.Col +1
-// 		for i := r_min; i <= r_max; i++ {
-// 			var gears []gear_ratio
-// 			for j := c_min; j <= c_max; j++ {
-// 				working_gear = gear_ratio{}
-// 				if i != symbol.Row || j != symbol.Col {
-// 					if unicode.IsDigit(rune(data[i][j])) {
-// 						working_gear.symbol = symbol
-// 						working_gear.gears = append(working_gear.gears, )
-// 					}
-// 				}
-// 			}
-// 		}
-// 	}
-// 	return ratios
-// }
-
-// func sum_gear_ratios(data [] string) (sum int) {
-// 	symbols := find_symbols(data, GEAR_SYMBOLS)
-
-// 	adjacent_digits := find_adjacent_digits(data, symbols)
-
-// 	parts := find_part_numbers(data)
-// 	return sum
-// }
+func sum_gear_ratios(data [] string) (sum int) {
+	return sum
+}
 
 func parts_unique(adjacent []digit_coordinates, parts []part_number) (unique_parts []part_number) {
 	for _, adj := range adjacent {
