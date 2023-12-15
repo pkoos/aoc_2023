@@ -44,13 +44,22 @@ func TestFindSpecificPart(t *testing.T) {
 func TestPartsUnique(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	adjacent := find_adjacent_digits(data, find_symbols(data, SYMBOLS))
-	parts := find_part_numbers(data)
-	
-	unique_parts := parts_unique(adjacent, parts)
-	_ = unique_parts
-	// fmt.Printf("len(adjacent): %d, len(parts): %d, len(unique_parts): %d\n", len(adjacent), len(parts), len(unique_parts))
-	// fmt.Printf("unique_parts: %+v\n", unique_parts)
-	t.Skip("Not Implemented Yet.")
+	actual_unique_parts := parts_unique(adjacent, find_part_numbers(data))
+	test_data, err := os.ReadFile("test_files/test_unique_parts")
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	var expected_unique_parts []part_number
+	err = json.Unmarshal(test_data, &expected_unique_parts)
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	for idx, actual := range actual_unique_parts {
+		expected := expected_unique_parts[idx]
+		if actual != expected {
+			t.Errorf("%d: expected %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
 }
 
 func TestFindPartNumbers(t *testing.T) {
@@ -122,8 +131,6 @@ func TestFindSymbols(t *testing.T) {
 
 func TestSumPartNumbers(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
-	// data, _ := utils.String_slice_file(INPUT_FILE)
-	// expected := 0
 	expected := 4361
 	actual := sum_part_numbers((data))
 	if expected != actual {
