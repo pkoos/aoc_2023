@@ -38,7 +38,6 @@ type gear_ratio struct {
 }
 
 func find_symbols(data []string, symbols string) (found []symbol_coordinates) {
-	fmt.Printf("symbols: '%s'\n", symbols)
 	for r_idx, line := range data {
 		for c_idx, val := range line {
 			s_idx := strings.IndexAny(string(val), symbols)
@@ -50,7 +49,6 @@ func find_symbols(data []string, symbols string) (found []symbol_coordinates) {
 			// 	found = append(found, symbol_coordinates{string(val), r_idx, c_idx})
 			// }
 			
-			// fmt.Printf("[%d][%d]: '%s' symbol? %t\n",
 			// 	r_idx, c_idx, string(val), is_symbol)
 		}
 	}
@@ -59,7 +57,6 @@ func find_symbols(data []string, symbols string) (found []symbol_coordinates) {
 
 func find_adjacent_digits(data []string, symbols []symbol_coordinates)(adjacent_digits []digit_coordinates) {
 	for _, symbol := range symbols {
-		// fmt.Printf("%+v, row: %d, col: %d\n", symbol, symbol.Row, symbol.Col)
 		r_min := symbol.Row - 1
 		r_max := symbol.Row + 1
 		c_min := symbol.Col - 1
@@ -68,7 +65,6 @@ func find_adjacent_digits(data []string, symbols []symbol_coordinates)(adjacent_
 			for j := c_min; j <= c_max; j++ {
 				if i != symbol.Row || j != symbol.Col {
 					if unicode.IsDigit(rune(data[i][j])) {
-						// fmt.Printf("[%d][%d]: %s, digit? %t\n", i, j, string(data[i][j]), unicode.IsDigit(rune(data[i][j])))
 						adjacent_digits = append(adjacent_digits, digit_coordinates{string(data[i][j]), i, j})
 					}
 					
@@ -85,7 +81,6 @@ func find_all_digits(data []string)(all_digits []digit_coordinates) {
 		for c_idx, character := range line {
 			if unicode.IsDigit(character) {
 				all_digits = append(all_digits, digit_coordinates{string(character), r_idx, c_idx})
-				// fmt.Printf("[%d][%d]: '%s'\n", r_idx, c_idx, string(character))
 			}
 		}
 	}
@@ -105,7 +100,6 @@ func find_part_numbers(data []string)(parts []part_number) {
 			} else {
 				if is_start {
 					the_digit := line[sidx:cidx]
-					// fmt.Printf("line[%d][%d:%d]: %s\n", ridx, sidx, cidx -1, the_digit)
 					parts = append(parts, part_number{ridx, sidx, cidx -1, the_digit})
 					is_start = false
 				}
@@ -113,7 +107,6 @@ func find_part_numbers(data []string)(parts []part_number) {
 		}
 		if is_start {
 			the_digit := line[sidx:]
-			// fmt.Printf("right before next row: line[%d][%d:%d]: %s\n", ridx, sidx, len(line) -1, the_digit)
 			parts = append(parts, part_number{ridx, sidx, len(line) -1, the_digit})
 			is_start = false
 		}
@@ -126,8 +119,6 @@ func find_specific_partnum(digit digit_coordinates, parts []part_number) (found_
 	for _, part := range parts {
 		if digit.Row == part.Row {
 			if digit.Col <= part.End && digit.Col >= part.Start {
-				// fmt.Printf("%d: digit: %+v\n", idx, digit)
-				// fmt.Printf("%d: found_part: %+v\n", idx, part)
 				return part
 			}
 		}
@@ -160,14 +151,23 @@ func find_specific_partnum(digit digit_coordinates, parts []part_number) (found_
 
 // func sum_gear_ratios(data [] string) (sum int) {
 // 	symbols := find_symbols(data, GEAR_SYMBOLS)
-// 	fmt.Printf("found symbols: %+v\n", symbols)
 
 // 	adjacent_digits := find_adjacent_digits(data, symbols)
-// 	fmt.Printf("found adjacent digits: %+v\n", adjacent_digits)
 
 // 	parts := find_part_numbers(data)
 // 	return sum
 // }
+
+func parts_unique(adjacent []digit_coordinates, parts []part_number) (unique_parts []part_number) {
+	for _, adj := range adjacent {
+		found_part := find_specific_partnum(adj, parts)
+		if !slices.Contains(unique_parts, found_part) {
+			unique_parts = append(unique_parts, found_part)	
+		}
+	}
+
+	return unique_parts
+}
 
 func sum_part_numbers(data []string) (sum int) {
 
@@ -175,13 +175,7 @@ func sum_part_numbers(data []string) (sum int) {
 
 	adjacent_digits := find_adjacent_digits(data, symbols)
 	parts := find_part_numbers(data)
-	var found_parts_unique []part_number
-	for _, adj := range adjacent_digits {
-		found_part := find_specific_partnum(adj, parts)
-		if !slices.Contains(found_parts_unique, found_part) {
-			found_parts_unique = append(found_parts_unique, found_part)
-		}
-	}
+	found_parts_unique := parts_unique(adjacent_digits, parts)
 
 	for _, part := range found_parts_unique {
 		value, _ := strconv.Atoi(part.Digit)

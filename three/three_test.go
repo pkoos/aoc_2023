@@ -18,6 +18,35 @@ const TEST_INPUT_FILE = "test_files/test_input"
 // 	// t.Skip("Not yet implemented")
 // }
 
+func TestFindSpecificPart(t *testing.T) {
+	t.Skip("Not Implemented Yet.")
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	parts := find_part_numbers(data)
+	adjacent := find_adjacent_digits(data, find_symbols(data, SYMBOLS))
+	test_data, err := os.ReadFile("test_files/")
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	var expecteds []part_number
+	err = json.Unmarshal(test_data, &expecteds)
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+
+	for idx, adj := range adjacent {
+		actual := find_specific_partnum(adj, parts)
+		expected := expecteds[idx]
+		if actual != expected {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
+}
+
+func TestPartsUnique(t *testing.T) {
+	t.Skip("Not Implemented Yet.")
+}
+
 func TestFindPartNumbers(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	actual_parts := find_part_numbers(data)
