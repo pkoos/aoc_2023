@@ -22,7 +22,7 @@ func TestFindSpecificPart(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	parts := find_part_numbers(data)
 	adjacent := find_adjacent_digits(data, find_symbols(data, SYMBOLS))
-	test_data, err := os.ReadFile("test_files/test_unique_parts")
+	test_data, err := os.ReadFile("test_files/test_found_parts")
 	if err != nil {
 		t.Fatalf("Error: %s\n", err)
 	}
@@ -31,7 +31,6 @@ func TestFindSpecificPart(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error: %s\n", err)
 	}
-
 
 	for idx, adj := range adjacent {
 		actual := find_specific_partnum(adj, parts)
@@ -43,6 +42,14 @@ func TestFindSpecificPart(t *testing.T) {
 }
 
 func TestPartsUnique(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	adjacent := find_adjacent_digits(data, find_symbols(data, SYMBOLS))
+	parts := find_part_numbers(data)
+	
+	unique_parts := parts_unique(adjacent, parts)
+	_ = unique_parts
+	// fmt.Printf("len(adjacent): %d, len(parts): %d, len(unique_parts): %d\n", len(adjacent), len(parts), len(unique_parts))
+	// fmt.Printf("unique_parts: %+v\n", unique_parts)
 	t.Skip("Not Implemented Yet.")
 }
 
@@ -60,6 +67,7 @@ func TestFindPartNumbers(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Error: %s\n", err)
 	}
+
 	for idx, actual := range actual_parts {
 		expected := expected_parts[idx]
 		if actual != expected {
