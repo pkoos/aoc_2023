@@ -20,9 +20,9 @@ type symbol_coordinates struct {
 }
 
 type digit_coordinates struct {
-	Digit string
-	Row int
-	Col int
+	Digit string `json:"digit"`
+	Row int `json:"row"`
+	Col int `json:"col"`
 }
 
 type part_number struct {

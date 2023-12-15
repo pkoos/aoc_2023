@@ -18,6 +18,28 @@ const TEST_INPUT_FILE = "test_files/test_input"
 // 	// t.Skip("Not yet implemented")
 // }
 
+func TestFindAdjacentDigits(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	actual_adjacent_digits := find_adjacent_digits(data, find_symbols(data, SYMBOLS))
+
+	test_data, err := os.ReadFile("test_files/test_adjacent_digits")
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	var expected_adjacent_digits []digit_coordinates
+	err = json.Unmarshal(test_data, &expected_adjacent_digits)
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+	for idx, actual := range actual_adjacent_digits {
+		expected := expected_adjacent_digits[idx]
+		if expected != actual {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
+}
+
 func TestFindSymbols(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	actual_symbols := find_symbols(data, SYMBOLS)
