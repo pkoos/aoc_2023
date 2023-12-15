@@ -121,6 +121,10 @@ func find_specific_partnum(digit digit_coordinates, parts []part_number) (found_
 }
 
 func sum_gear_ratios(data [] string) (sum int) {
+	symbols := find_symbols(data, GEAR_SYMBOLS)
+	fmt.Printf("gear symbols: %+v\n", symbols)
+	adjacent_digits := find_adjacent_digits(data, symbols)
+	fmt.Printf("gear adjacent digits: %+v\n", adjacent_digits)
 	return sum
 }
 

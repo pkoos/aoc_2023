@@ -11,12 +11,39 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
-// func TestSumGearRatios(t *testing.T) {
-// 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
-// 	actual := sum_gear_ratios(data)
-// 	_=actual
-// 	// t.Skip("Not yet implemented")
-// }
+func TestGearSymbols(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	actual_symbols := find_symbols(data, GEAR_SYMBOLS)
+
+	var test_data []byte
+	var err error
+	if test_data, err = os.ReadFile("test_files/test_gear_symbols"); err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+	var expected_symbols []symbol_coordinates
+	if err = json.Unmarshal(test_data, &expected_symbols); err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+	for idx, actual := range actual_symbols {
+		if expected := expected_symbols[idx]; actual != expected {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
+
+}
+
+func TestSumGearRatios(t *testing.T) {
+	
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected := 467835
+
+	if actual := sum_gear_ratios(data); expected != actual {
+		t.Skip("Not yet implemented")
+		t.Errorf("expected :%d, actual :%d\n", expected, actual)
+	}
+}
 
 func TestFindSpecificPart(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
@@ -136,7 +163,7 @@ func TestSumPartNumbers(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expected := 4361
 
-	if actual := sum_part_numbers((data)); expected != actual {
+	if actual := sum_part_numbers(data); expected != actual {
 		t.Errorf("expected: %d, actual: %d\n", expected, actual)
 	}
 }
