@@ -2,7 +2,7 @@ package three
 
 import (
 	"encoding/json"
-	"fmt"
+	_ "fmt"
 	"os"
 	"testing"
 
@@ -17,6 +17,28 @@ const TEST_INPUT_FILE = "test_files/test_input"
 // 	_=actual
 // 	// t.Skip("Not yet implemented")
 // }
+
+func TestFindPartNumbers(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	actual_parts := find_part_numbers(data)
+
+	test_data, err := os.ReadFile("test_files/test_parts")
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+	var expected_parts []part_number
+	err = json.Unmarshal(test_data, &expected_parts)
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	for idx, actual := range actual_parts {
+		expected := expected_parts[idx]
+		if actual != expected {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
+}
 
 func TestFindAdjacentDigits(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
@@ -43,7 +65,6 @@ func TestFindAdjacentDigits(t *testing.T) {
 func TestFindSymbols(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	actual_symbols := find_symbols(data, SYMBOLS)
-	fmt.Printf("actual_symbols: %+v\n", actual_symbols)
 
 	test_symbols_data, err := os.ReadFile("test_files/test_symbols")
 	if err != nil {
@@ -61,8 +82,6 @@ func TestFindSymbols(t *testing.T) {
 			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
 		}
 	}
-	fmt.Printf("expected_symbols: '%+v'\n", expected_symbols)
-
 }
 
 func TestSumPartNumbers(t *testing.T) {

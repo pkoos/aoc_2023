@@ -26,10 +26,10 @@ type digit_coordinates struct {
 }
 
 type part_number struct {
-	Row int
-	Start int
-	End int
-	Digit string
+	Row int `json:"row"`
+	Start int `json:"start"`
+	End int `json:"end"`
+	Digit string `json:"digit"`
 }
 
 type gear_ratio struct {
