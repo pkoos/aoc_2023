@@ -19,11 +19,10 @@ const TEST_INPUT_FILE = "test_files/test_input"
 // }
 
 func TestFindSpecificPart(t *testing.T) {
-	t.Skip("Not Implemented Yet.")
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	parts := find_part_numbers(data)
 	adjacent := find_adjacent_digits(data, find_symbols(data, SYMBOLS))
-	test_data, err := os.ReadFile("test_files/")
+	test_data, err := os.ReadFile("test_files/test_unique_parts")
 	if err != nil {
 		t.Fatalf("Error: %s\n", err)
 	}
