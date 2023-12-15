@@ -11,11 +11,12 @@ import (
 
 const INPUT_FILE = "three/input"
 const SYMBOLS = "*/-@$=%+#&"
+const GEAR_SYMBOLS = "*"
 
 type symbol_coordinates struct {
-	Symbol string
-	Row int
-	Col int
+	Symbol string `json:"symbol"`
+	Row int `json:"row"`
+	Col int `json:"col"`
 }
 
 type digit_coordinates struct {
@@ -31,13 +32,23 @@ type part_number struct {
 	Digit string
 }
 
-func find_symbols(data []string) (found []symbol_coordinates) {
+type gear_ratio struct {
+	symbol symbol_coordinates
+	gears []digit_coordinates
+}
+
+func find_symbols(data []string, symbols string) (found []symbol_coordinates) {
+	fmt.Printf("symbols: '%s'\n", symbols)
 	for r_idx, line := range data {
 		for c_idx, val := range line {
-			is_symbol := strings.Contains(SYMBOLS, string(val))
-			if is_symbol {
+			s_idx := strings.IndexAny(string(val), symbols)
+			// is_symbol := strings.Contains(SYMBOLS, string(val))
+			if s_idx != -1 {
 				found = append(found, symbol_coordinates{string(val), r_idx, c_idx})
 			}
+			// if is_symbol {
+			// 	found = append(found, symbol_coordinates{string(val), r_idx, c_idx})
+			// }
 			
 			// fmt.Printf("[%d][%d]: '%s' symbol? %t\n",
 			// 	r_idx, c_idx, string(val), is_symbol)
@@ -124,39 +135,59 @@ func find_specific_partnum(digit digit_coordinates, parts []part_number) (found_
 	return found_part
 }
 
-func sum_part_numbers(data []string) (sum int) {
-	// var found_symbols []symbol_coordinates
+// func find_gear_ratios(data []string, symbols []symbol_coordinates)(ratios []gear_ratio) {
+// 	var working_gear gear_ratio
+// 	for _, symbol := range symbols {
+// 		r_min := symbol.Row -1
+// 		r_max := symbol.Row +1
+// 		c_min := symbol.Col -1
+// 		c_max := symbol.Col +1
+// 		for i := r_min; i <= r_max; i++ {
+// 			var gears []gear_ratio
+// 			for j := c_min; j <= c_max; j++ {
+// 				working_gear = gear_ratio{}
+// 				if i != symbol.Row || j != symbol.Col {
+// 					if unicode.IsDigit(rune(data[i][j])) {
+// 						working_gear.symbol = symbol
+// 						working_gear.gears = append(working_gear.gears, )
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return ratios
+// }
 
-	symbols := find_symbols(data)
-	// fmt.Printf("found symbols: %+v\n", symbols)
+// func sum_gear_ratios(data [] string) (sum int) {
+// 	symbols := find_symbols(data, GEAR_SYMBOLS)
+// 	fmt.Printf("found symbols: %+v\n", symbols)
+
+// 	adjacent_digits := find_adjacent_digits(data, symbols)
+// 	fmt.Printf("found adjacent digits: %+v\n", adjacent_digits)
+
+// 	parts := find_part_numbers(data)
+// 	return sum
+// }
+
+func sum_part_numbers(data []string) (sum int) {
+
+	symbols := find_symbols(data, SYMBOLS)
 
 	adjacent_digits := find_adjacent_digits(data, symbols)
-	// fmt.Printf("adjacent digits: %+v\n", adjacent_digits)
-
-	// all_digits := find_all_digits(data)
-	// fmt.Printf("all digits: %+v\n", all_digits)
-
 	parts := find_part_numbers(data)
-	// fmt.Printf("parts: %+v\n", parts)
-
-	// var found_parts []part_number
 	var found_parts_unique []part_number
 	for _, adj := range adjacent_digits {
 		found_part := find_specific_partnum(adj, parts)
 		if !slices.Contains(found_parts_unique, found_part) {
 			found_parts_unique = append(found_parts_unique, found_part)
 		}
-		// found_parts = append(found_parts, found_part)
 	}
 
 	for _, part := range found_parts_unique {
 		value, _ := strconv.Atoi(part.Digit)
 		sum += value
 	}
-	// fmt.Printf("found parts: %+v\n", found_parts)
-	// fmt.Printf("\nunique found parts: %+v\n", found_parts_unique)
-	
-	// fmt.Printf("========== THE SUM ==========\n========== %d ==========", sum)
+
 	return sum
 }
 
@@ -167,5 +198,7 @@ func Run() {
 		panic(err)
 	}
 	sum := sum_part_numbers(data)
-	fmt.Printf("Final Day 2, Part 1: %d\n", sum)
+	fmt.Printf("Day 3, Part 1: %d\n", sum)
+	// gear_ratios := sum_gear_ratios(data)
+	// fmt.Printf("Day 3, Part 2: %d\n", gear_ratios)
 }

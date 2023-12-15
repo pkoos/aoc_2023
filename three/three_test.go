@@ -1,6 +1,9 @@
 package three
 
 import (
+	"encoding/json"
+	"fmt"
+	"os"
 	"testing"
 
 	"aoc_2023/utils"
@@ -8,8 +11,39 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+// func TestSumGearRatios(t *testing.T) {
+// 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+// 	actual := sum_gear_ratios(data)
+// 	_=actual
+// 	// t.Skip("Not yet implemented")
+// }
+
+func TestFindSymbols(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	actual_symbols := find_symbols(data, SYMBOLS)
+	fmt.Printf("actual_symbols: %+v\n", actual_symbols)
+
+	test_symbols_data, err := os.ReadFile("test_files/test_symbols")
+	if err != nil {
+		panic(err)
+	}
+	var expected_symbols []symbol_coordinates
+	err = json.Unmarshal(test_symbols_data, &expected_symbols)
+	if err != nil {
+		panic(err)
+	}
+
+	for idx, actual := range actual_symbols {
+		expected := expected_symbols[idx]
+		if expected != actual {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
+	fmt.Printf("expected_symbols: '%+v'\n", expected_symbols)
+
+}
+
 func TestSumPartNumbers(t *testing.T) {
-	// t.Skip("Not yet implemented.")
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	// data, _ := utils.String_slice_file(INPUT_FILE)
 	// expected := 0
