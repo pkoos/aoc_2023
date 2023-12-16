@@ -1,6 +1,7 @@
 package four
 
 import (
+	// "aoc_2023/utils"
 	"fmt"
 )
 
@@ -25,6 +26,10 @@ func (card Card) CalculatePoints() (points int) {
 }
 
 type Cards []Card
+
+func sum_points(data []string) (total int) {
+	return total
+}
 
 func Run() {
 	fmt.Println("==== Day 4 ====")
