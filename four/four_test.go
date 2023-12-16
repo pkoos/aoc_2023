@@ -19,6 +19,15 @@ func TestParseWinningNumbers(t *testing.T) {
 	t.Skip("Not yet implemented.")
 }
 func TestParseId(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected_ids, _ := utils.Int_slice_file("test_files/test_ids")
+	for idx, line := range data {
+		actual := parse_id(line)
+		expected := expected_ids[idx]
+		if actual != expected {
+			t.Errorf("%d: expected: %d, actual %d\n", idx, expected, actual)
+		}
+	}
 	t.Skip("Not yet implemented.")
 }
 

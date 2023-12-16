@@ -3,6 +3,8 @@ package four
 import (
 	// "aoc_2023/utils"
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 const INPUT_FILE = "four/input"
@@ -32,7 +34,7 @@ func (card Card) CalculateMatches() {
 type Cards []Card
 
 func parse_current_numbers(line string) (current []int) {
-
+	return current
 }
 
 func parse_winning_numbers(line string) (winning []int) {
@@ -40,6 +42,11 @@ func parse_winning_numbers(line string) (winning []int) {
 }
 
 func parse_id(line string) (id int) {
+	split_line := strings.Split(line, ":")
+	id_data := strings.Split(split_line[0], " ")
+	id_str := id_data[1]
+	id_val, _ := strconv.Atoi(id_str)
+	id = id_val
 	return id
 }
 
