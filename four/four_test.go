@@ -2,6 +2,8 @@ package four
 
 import (
 	"aoc_2023/utils"
+	"encoding/json"
+	"os"
 	"testing"
 )
 
@@ -11,13 +13,10 @@ func TestCalculateMatches(t *testing.T) {
 	t.Skip("Not yet implemented.")
 }
 
-func TestParseCurrentNumbers(t *testing.T) {
+func TestParseNumbers(t *testing.T) {
 	t.Skip("Not yet implemented.")
 }
 
-func TestParseWinningNumbers(t *testing.T) {
-	t.Skip("Not yet implemented.")
-}
 func TestParseId(t *testing.T) {
 	data, _ := utils.String_slice_file("test_files/test_ids_input")
 	expected_ids, _ := utils.Int_slice_file("test_files/test_ids")
@@ -28,7 +27,29 @@ func TestParseId(t *testing.T) {
 			t.Errorf("%d: expected: %d, actual %d\n", idx, expected, actual)
 		}
 	}
+}
+
+func TestParseScratchcardInput(t *testing.T) {
 	t.Skip("Not yet implemented.")
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	test_data, err := os.ReadFile("test_files/test_scratchcards")
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	
+	var expected_scratchcards Cards
+	err = json.Unmarshal(test_data, &expected_scratchcards)
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	
+	for idx, line := range data {
+		actual := parse_scratchcard_input(line)
+		expected := expected_scratchcards[idx]
+		if !actual.Equals(expected) {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
 }
 
 func TestScratchcardPoints(t *testing.T) {

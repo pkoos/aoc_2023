@@ -1,7 +1,6 @@
 package four
 
 import (
-	// "aoc_2023/utils"
 	"fmt"
 	"strconv"
 	"strings"
@@ -10,10 +9,10 @@ import (
 const INPUT_FILE = "four/input"
 
 type Card struct {
-	ID int
-	Winning []int
-	Current []int
-	Matches int
+	ID int `json:"id"`
+	Winning []int `json:"winning"`
+	Current []int `json:"current"`
+	Matches int `json:"matches"`
 }
 
 func (card Card) CalculatePoints() (points int) {
@@ -28,18 +27,25 @@ func (card Card) CalculatePoints() (points int) {
 }
 
 func (card Card) CalculateMatches() {
+	// loop through winning
+	// check to see if individual number is in current
+	// for every match, add to card.Matches field
+}
 
+func (card Card) Equals(other_card Card) (isEqual bool) {
+	// compare ids
+	// compare matches
+	// loop to compare winning
+	// loop to compare current
+	return isEqual
 }
 
 type Cards []Card
 
-func parse_current_numbers(line string) (current []int) {
+func parse_numbers(line string) (current []int) {
 	return current
 }
 
-func parse_winning_numbers(line string) (winning []int) {
-	return winning
-}
 
 func parse_id(card_str string) (id int) {
 	id_data := strings.Split(card_str, " ")
@@ -52,8 +58,10 @@ func parse_id(card_str string) (id int) {
 func parse_scratchcard_input(line string) (card Card) {
 	split_line := strings.Split(line, ":")
 	card.ID = parse_id(split_line[0])
-	card.Winning = parse_winning_numbers(line)
-	card.Current =  parse_current_numbers(line)
+
+	numbers_data := strings.Split(split_line[1], "|")
+	card.Winning = parse_numbers(numbers_data[0])
+	card.Current =  parse_numbers(numbers_data[1])
 	return card
 }
 
