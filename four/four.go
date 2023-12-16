@@ -41,20 +41,24 @@ func parse_winning_numbers(line string) (winning []int) {
 	return winning
 }
 
-func parse_id(line string) (id int) {
-	split_line := strings.Split(line, ":")
-	id_data := strings.Split(split_line[0], " ")
+func parse_id(card_str string) (id int) {
+	id_data := strings.Split(card_str, " ")
 	id_str := id_data[1]
 	id_val, _ := strconv.Atoi(id_str)
 	id = id_val
 	return id
 }
 
+func parse_scratchcard_input(line string) (card Card) {
+	split_line := strings.Split(line, ":")
+	card.ID = parse_id(split_line[0])
+	card.Winning = parse_winning_numbers(line)
+	card.Current =  parse_current_numbers(line)
+	return card
+}
+
 func scratchcard_points(line string) (points int) {
-	id := parse_id(line)
-	winning_numbers := parse_winning_numbers(line)
-	current_numbers := parse_current_numbers(line)
-	scratch_card := Card{id, winning_numbers, current_numbers, 0}
+	scratch_card := parse_scratchcard_input(line)
 	scratch_card.CalculateMatches()
 	points = scratch_card.CalculatePoints()
 	return points
