@@ -68,8 +68,14 @@ func (gear gear_ratio) IsEmpty() (empty bool) {
 	return empty
 }
 
-type Gears []gear_ratio
+func (gear gear_ratio) CalcGearRatio() (product int) {
+	gear_val_one, _ := strconv.Atoi(gear.Gears[0].Digit)
+	gear_val_two, _ := strconv.Atoi(gear.Gears[1].Digit)
+	product = gear_val_one * gear_val_two
+	return product
+}
 
+type Gears []gear_ratio
 
 
 func find_gear(symbol symbol_coordinates, parts Parts) (gear gear_ratio) {
@@ -179,10 +185,13 @@ func find_specific_partnum(digit digit_coordinates, parts []part_number) (found_
 }
 
 func sum_gear_ratios(data [] string) (sum int) {
-	// symbols := find_symbols(data, GEAR_SYMBOLS)
-	// fmt.Printf("gear symbols: %+v\n", symbols)
-	// adjacent_digits := find_adjacent_digits(data, symbols)
-	// fmt.Printf("gear adjacent digits: %+v\n", adjacent_digits)
+	symbols := find_symbols(data, GEAR_SYMBOLS)
+	parts := find_part_numbers(data)
+	for _, symbol := range symbols {
+		if gear := find_gear(symbol, parts); !gear.IsEmpty() {
+			sum += gear.CalcGearRatio()
+		}
+	}
 	return sum
 }
 
@@ -221,6 +230,6 @@ func Run() {
 	}
 	sum := sum_part_numbers(data)
 	fmt.Printf("Day 3, Part 1: %d\n", sum)
-	// gear_ratios := sum_gear_ratios(data)
-	// fmt.Printf("Day 3, Part 2: %d\n", gear_ratios)
+	gear_ratios := sum_gear_ratios(data)
+	fmt.Printf("Day 3, Part 2: %d\n", gear_ratios)
 }

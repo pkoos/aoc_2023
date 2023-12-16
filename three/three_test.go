@@ -91,7 +91,6 @@ func TestSumGearRatios(t *testing.T) {
 	expected := 467835
 
 	if actual := sum_gear_ratios(data); expected != actual {
-		t.Skip("Not yet implemented")
 		t.Errorf("expected :%d, actual :%d\n", expected, actual)
 	}
 }
