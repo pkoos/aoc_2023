@@ -19,11 +19,15 @@ type symbol_coordinates struct {
 	Col int `json:"col"`
 }
 
+type Symbols []symbol_coordinates
+
 type digit_coordinates struct {
 	Digit string `json:"digit"`
 	Row int `json:"row"`
 	Col int `json:"col"`
 }
+
+type Digits []digit_coordinates
 
 type part_number struct {
 	Row int `json:"row"`
@@ -32,9 +36,63 @@ type part_number struct {
 	Digit string `json:"digit"`
 }
 
+func (p part_number) InRange(start int, end int) (in_range bool) {
+	in_start := p.Start <= end && p.Start >= start
+	in_end := p.End <= end && p.End >= start
+	in_range = in_start || in_end
+	return in_range
+}
+
+type Parts []part_number
+
+func (parts Parts) Filter(row int, start int, end int) (filtered Parts) {
+	for _, i := range parts {
+		if i.InRange(start, end) && i.Row == row {
+		// if i.Row == row && i.Start >= start || i.End <= end{
+			filtered = append(filtered, i)
+		}
+	}
+	return filtered
+}
+
 type gear_ratio struct {
-	symbol symbol_coordinates
-	gears []digit_coordinates
+	Symbol symbol_coordinates `json:"symbol"`
+	Gears Parts `json:"gears"`
+}
+
+func (gear gear_ratio) IsEmpty() (empty bool) {
+	empty_symbol := gear.Symbol == symbol_coordinates{}
+	empty_gears := gear.Gears == nil
+
+	empty = empty_symbol && empty_gears
+	return empty
+}
+
+type Gears []gear_ratio
+
+
+
+func find_gear(symbol symbol_coordinates, parts Parts) (gear gear_ratio) {
+		gear.Symbol = symbol
+		r_min := symbol.Row - 1
+		r_max := symbol.Row + 1
+		c_min := symbol.Col - 1
+		c_max := symbol.Col + 1
+		// fmt.Printf("symbol: %+v, r_min: %d, r_max: %d, c_min: %d, c_max: %d\n", symbol, r_min, r_max, c_min, c_max)
+		for i := r_min; i <= r_max; i++ {
+			
+			loop_gears := parts.Filter(i, c_min, c_max)
+			// fmt.Printf("%d: loop_gears(%d): %+v\n",i , len(loop_gears), loop_gears)
+			if len(loop_gears) > 0 {
+				// for _, gear := range loop_gears {
+				gear.Gears = append(gear.Gears, loop_gears...)
+				// }
+			}
+		}
+		if len(gear.Gears) != 2 {
+			return gear_ratio{}
+		}
+	return gear
 }
 
 func find_symbols(data []string, symbols string) (found []symbol_coordinates) {
@@ -121,10 +179,10 @@ func find_specific_partnum(digit digit_coordinates, parts []part_number) (found_
 }
 
 func sum_gear_ratios(data [] string) (sum int) {
-	symbols := find_symbols(data, GEAR_SYMBOLS)
-	fmt.Printf("gear symbols: %+v\n", symbols)
-	adjacent_digits := find_adjacent_digits(data, symbols)
-	fmt.Printf("gear adjacent digits: %+v\n", adjacent_digits)
+	// symbols := find_symbols(data, GEAR_SYMBOLS)
+	// fmt.Printf("gear symbols: %+v\n", symbols)
+	// adjacent_digits := find_adjacent_digits(data, symbols)
+	// fmt.Printf("gear adjacent digits: %+v\n", adjacent_digits)
 	return sum
 }
 

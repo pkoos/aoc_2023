@@ -1,0 +1,32 @@
+[
+    {
+        "symbol":{
+            "symbol":"*",
+            "row":1,
+            "col":3
+        },
+        "gears":[
+            {"row":0,"start":0,"end":2,"digit":"467"},
+            {"row":2,"start":2,"end":3,"digit":"35"}
+        ]
+    },
+    {
+        "symbol":{
+            "symbol":"",
+            "row":0,
+            "col":0
+        },
+        "gears":[]
+    },
+    {
+        "symbol":{
+            "symbol":"*",
+            "row":8,
+            "col":5
+        },
+        "gears":[
+            {"row":7,"start":6,"end":8,"digit":"755"},
+            {"row":9,"start":5,"end":7,"digit":"598"}
+        ]
+    }
+]

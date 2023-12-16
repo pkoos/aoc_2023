@@ -2,7 +2,6 @@ package three
 
 import (
 	"encoding/json"
-	_ "fmt"
 	"os"
 	"testing"
 
@@ -10,6 +9,58 @@ import (
 )
 
 const TEST_INPUT_FILE = "test_files/test_input"
+
+func TestFindGear(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	symbols := find_symbols(data, GEAR_SYMBOLS)
+	parts := find_part_numbers(data)
+
+	var test_data []byte
+	var err error
+	if test_data, err = os.ReadFile("test_files/test_found_gears"); err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	var expected_gears Gears
+	if err = json.Unmarshal(test_data, &expected_gears); err != nil {
+		t.Fatalf("Error:%s\n", err)
+	}
+
+	for idx, symbol := range symbols {
+		expected := expected_gears[idx]
+		actual := find_gear(symbol, parts)
+		if expected.Symbol != actual.Symbol {
+			t.Errorf("Symbol expected: %+v, actual: %+v\n", expected.Symbol, actual.Symbol)
+		}		
+		for idx, actual_part := range actual.Gears {
+			expected_part := expected.Gears[idx]
+			if actual_part != expected_part {
+				t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected_part, actual_part)
+			}
+		}
+	}
+}
+func TestGearAdjacents(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	actual_adjacents := find_adjacent_digits(data, find_symbols(data, GEAR_SYMBOLS))
+
+	var test_data []byte
+	var err error
+	if test_data, err = os.ReadFile("test_files/test_gear_adjacents"); err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+	var expected_adjacents []digit_coordinates
+	if err = json.Unmarshal(test_data, &expected_adjacents); err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+	for idx, actual := range actual_adjacents {
+		if expected := expected_adjacents[idx]; actual != expected {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", idx, expected, actual)
+		}
+	}
+}
+
 
 func TestGearSymbols(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
