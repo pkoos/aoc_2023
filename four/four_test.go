@@ -7,6 +7,25 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestCalculateMatches(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
+func TestParseCurrentNumbers(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
+func TestParseWinningNumbers(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+func TestParseId(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
+func TestScratchcardPoints(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
 func TestCardCalculatePoints(t *testing.T) {
 	test_card1 := Card{ID: 1, Matches: 0}
 	expected1 := 0
@@ -79,7 +98,7 @@ func TestCardCalculatePoints(t *testing.T) {
 
 }
 
-func TestSumScratchcards(t *testing.T) {
+func TestSumPoints(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expected := 13
 	actual := sum_points(data)
