@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 const INPUT_FILE = "four/input"
@@ -43,9 +44,27 @@ func (card Card) Equals(other_card Card) (isEqual bool) {
 type Cards []Card
 
 func parse_numbers(line string) (current []int) {
+	var found_digit bool
+	var num_str string
+
+	for _, char := range line {
+		if unicode.IsDigit(char) { // found a numeric digit
+			found_digit = true
+			num_str += string(char)
+		} else {
+			if found_digit {
+				digit, err := strconv.Atoi(num_str)
+				if err != nil {
+					fmt.Printf("Error parsing \"%s\".", num_str)
+				}
+				current = append(current, digit)
+				num_str = ""
+				found_digit = false
+			}
+		}
+	}
 	return current
 }
-
 
 func parse_id(card_str string) (id int) {
 	id_data := strings.Split(card_str, " ")

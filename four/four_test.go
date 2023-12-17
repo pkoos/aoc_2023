@@ -14,7 +14,28 @@ func TestCalculateMatches(t *testing.T) {
 }
 
 func TestParseNumbers(t *testing.T) {
-	t.Skip("Not yet implemented.")
+	data, _ := utils.String_slice_file("test_files/test_numbers_input")
+
+	test_data, err := os.ReadFile("test_files/test_numbers")
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+
+	var expected_numbers [][]int
+	err = json.Unmarshal(test_data, &expected_numbers)
+	if err != nil {
+		t.Fatalf("Error: %s\n", err)
+	}
+	for idx, line := range data {
+		actual := parse_numbers(line)
+		expected_number := expected_numbers[idx]
+		for i, act_val := range actual {
+			exp_val := expected_number[i]
+			if act_val != exp_val {
+				t.Errorf("[%d][%d] '%s' expected: %d, actual: %d\n", idx, i, line, exp_val, act_val)
+			}
+		}
+	}
 }
 
 func TestParseId(t *testing.T) {
