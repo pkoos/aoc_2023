@@ -157,8 +157,10 @@ func Run() {
 		panic(err)
 	}
 	sum := sum_ids(data)
-	fmt.Printf("Final Sum day 2 Part One: %d\n", sum)
+	fmt.Println("==== Day 2 - Part 1 ====")
+	fmt.Printf("Answer: %d\n", sum)
 
 	sum_prod := sum_products(data)
-	fmt.Printf("Final Sum day 2 Part Two: %d\n", sum_prod)
+	fmt.Println("==== Day 2 - Part 2 ====")
+	fmt.Printf("Answer: %d\n", sum_prod)
 }

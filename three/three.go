@@ -223,13 +223,15 @@ func sum_part_numbers(data []string) (sum int) {
 }
 
 func Run() {
-	fmt.Print("Day 3 - Advent of Code 2023")
 	data, err := utils.String_slice_file(INPUT_FILE)
 	if err != nil {
 		panic(err)
 	}
 	sum := sum_part_numbers(data)
-	fmt.Printf("Day 3, Part 1: %d\n", sum)
+	fmt.Println("==== Day 3 - Part 1 ====")
+	fmt.Printf("Answer: %d\n", sum)
+
 	gear_ratios := sum_gear_ratios(data)
-	fmt.Printf("Day 3, Part 2: %d\n", gear_ratios)
+	fmt.Println("==== Day 3 - Part 2 ====")
+	fmt.Printf("Answer: %d\n", gear_ratios)
 }

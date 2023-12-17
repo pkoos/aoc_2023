@@ -163,5 +163,7 @@ func Run() {
 	}
 
 	sum := calibration_sum(data)
-	fmt.Printf("len(data): %d, sum: %d\n", len(data), sum)
+	fmt.Println("==== Day 1 - Part 1 ====")
+	fmt.Println("==== Day 2 - Part 2 ====")
+	fmt.Printf("Answer: %d\n", sum)
 }

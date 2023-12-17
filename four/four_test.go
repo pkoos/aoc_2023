@@ -164,8 +164,6 @@ func TestSumPoints(t *testing.T) {
 	expected := 13
 	actual := sum_points(data)
 	if expected != actual {
-		t.Skip("Not yet implemented.")
 		t.Errorf("expected: %d, actual: %d\n", expected, actual)
 	}
-	t.Skip("Not yet implemented.")
 }

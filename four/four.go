@@ -1,6 +1,7 @@
 package four
 
 import (
+	"aoc_2023/utils"
 	"fmt"
 	"slices"
 	"strconv"
@@ -127,5 +128,12 @@ func sum_points(data []string) (total int) {
 }
 
 func Run() {
-	fmt.Println("==== Day 4 ====")
+	data, err := utils.String_slice_file(INPUT_FILE)
+	if err != nil {
+		panic(err)
+	}
+
+	sum_part_one := sum_points(data)
+	fmt.Println("==== Day 4 - Part 1 ====")
+	fmt.Printf("Answer: %d\n", sum_part_one)
 }
