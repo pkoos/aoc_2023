@@ -51,7 +51,7 @@ func TestParseId(t *testing.T) {
 }
 
 func TestParseScratchcardInput(t *testing.T) {
-	t.Skip("Not yet implemented.")
+	// t.Skip("Not yet implemented.")
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	test_data, err := os.ReadFile("test_files/test_scratchcards")
 	if err != nil {

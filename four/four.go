@@ -34,10 +34,26 @@ func (card Card) CalculateMatches() {
 }
 
 func (card Card) Equals(other_card Card) (isEqual bool) {
-	// compare ids
-	// compare matches
-	// loop to compare winning
-	// loop to compare current
+	ids_equal := card.ID == other_card.ID
+	matches_equal := card.Matches == other_card.Matches
+	
+	winning_digits_equal := true
+	for idx, num_win := range card.Winning {
+		if num_win != other_card.Winning[idx] {
+			winning_digits_equal = false
+			break
+		}
+	}
+	
+	current_digits_equal := true
+	for idx, num_win := range card.Winning {
+		if num_win != other_card.Winning[idx] {
+			current_digits_equal = false
+			break
+		}
+	}
+	
+	isEqual = ids_equal && matches_equal && winning_digits_equal && current_digits_equal
 	return isEqual
 }
 
@@ -47,8 +63,16 @@ func parse_numbers(line string) (current []int) {
 	var found_digit bool
 	var num_str string
 
-	for _, char := range line {
+	for idx, char := range line {
 		if unicode.IsDigit(char) { // found a numeric digit
+			if len(line) - 1 == idx {
+				num_str += string(char)
+				digit, err := strconv.Atoi(num_str)
+				if err != nil {
+					fmt.Printf("Error parsing \"%s\".", num_str)					
+				}
+				current = append(current, digit)
+			}
 			found_digit = true
 			num_str += string(char)
 		} else {
