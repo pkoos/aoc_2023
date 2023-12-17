@@ -64,6 +64,30 @@ func (card Card) Equals(other_card Card) (isEqual bool) {
 
 type Cards []Card
 
+func calculate_scratchcards(data []string) (num_scratchcards int) {
+	results := make(map[int]int)
+	total_cards := len(data)
+	fmt.Printf("total_cards: %d\n\n", total_cards)
+	for _, line := range data {
+		card := parse_scratchcard_input(line)
+		card.CalculateMatches() // this gets the number of matches
+		results[card.ID] += 1 // This is the original card being added
+		for i := 0; i < results[card.ID]; i++ {
+			for j:= 0; j < card.Matches; j++ {
+				copy_card_id := 1 + card.ID + j
+				if copy_card_id <= total_cards {
+					results[copy_card_id] += 1
+				}
+			}
+		}
+		fmt.Printf("results[%d]: %d\n", card.ID, results[card.ID])
+	}
+	for _, val := range results {
+		num_scratchcards += val
+	}
+	return num_scratchcards
+}
+
 func parse_numbers(line string) (current []int) {
 	var found_digit bool
 	var num_str string
@@ -96,10 +120,14 @@ func parse_numbers(line string) (current []int) {
 }
 
 func parse_id(card_str string) (id int) {
-	id_data := strings.Split(card_str, " ")
-	id_str := id_data[1]
-	id_val, _ := strconv.Atoi(id_str)
-	id = id_val
+	var id_str string
+	for _, char := range card_str {
+		if unicode.IsDigit(char) {
+			id_str += string(char)
+		}
+	}
+	val, _ := strconv.Atoi(id_str)
+	id = val
 	return id
 }
 
@@ -136,4 +164,8 @@ func Run() {
 	sum_part_one := sum_points(data)
 	fmt.Println("==== Day 4 - Part 1 ====")
 	fmt.Printf("Answer: %d\n", sum_part_one)
+
+	sum_part_two := calculate_scratchcards(data)
+	fmt.Println("==== Day 4 - Part 2 ====")
+	fmt.Printf("Answer: %d\n", sum_part_two)
 }

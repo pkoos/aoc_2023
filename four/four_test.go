@@ -84,6 +84,12 @@ func TestParseScratchcardInput(t *testing.T) {
 }
 
 func TestScratchcardPoints(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected := 30
+	actual := calculate_scratchcards(data)
+	if expected != actual {
+		t.Errorf("expected: %d, actual: %d\n", expected, actual)
+	}
 	t.Skip("Not yet implemented.")
 }
 
