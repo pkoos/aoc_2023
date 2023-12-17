@@ -2,6 +2,7 @@ package four
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 	"unicode"
@@ -27,10 +28,13 @@ func (card Card) CalculatePoints() (points int) {
 	return points
 }
 
-func (card Card) CalculateMatches() {
+func (card *Card) CalculateMatches() {
 	// loop through winning
-	// check to see if individual number is in current
-	// for every match, add to card.Matches field
+	for _, digit := range card.Winning {
+		if slices.Contains[[]int, int](card.Current, digit) {
+			card.Matches += 1
+		}
+	}
 }
 
 func (card Card) Equals(other_card Card) (isEqual bool) {

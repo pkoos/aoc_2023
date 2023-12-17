@@ -10,7 +10,17 @@ import (
 const TEST_INPUT_FILE = "test_files/test_input"
 
 func TestCalculateMatches(t *testing.T) {
-	t.Skip("Not yet implemented.")
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected_matches, _ := utils.Int_slice_file("test_files/test_matches")
+	for idx, line := range data {
+		card := parse_scratchcard_input(line)
+		card.CalculateMatches()
+		actual := card.Matches
+		expected := expected_matches[idx]
+		if actual != expected {
+			t.Errorf("%d: '%s', expected: %d, actual: %d\n", idx, line, expected, actual)
+		}
+	}
 }
 
 func TestParseNumbers(t *testing.T) {
