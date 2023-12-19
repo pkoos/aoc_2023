@@ -10,6 +10,15 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestCalculateWinnings(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected := 6440
+	actual := parse_hands(data).CalculateWinnings()
+	if expected != actual {
+		t.Errorf("expected: %d, actual: %d\n", expected, actual)
+	}
+}
+
 func TestRankHands(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expecteds := Hands{
@@ -131,7 +140,6 @@ func TestTotalWinnings(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	actual := total_winnings(data)
 	expected := 765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5 // 6440
-	t.Skip("Not yet implemented")
 	if expected != actual {
 		t.Errorf("expected: %d, actual: %d\n", expected, actual)
 	}

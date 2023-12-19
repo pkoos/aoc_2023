@@ -139,6 +139,12 @@ func (h Hands) RankHands() {
 }
 
 func (h Hands) CalculateWinnings() (result int) {
+	h.DetermineHandTypes()
+	h.SortHands()
+	h.RankHands()
+	for _, hand := range h {
+		result += hand.Rank * hand.Bid
+	}
 	return result
 }
 
@@ -163,13 +169,7 @@ func parse_hands(data []string) (result Hands) {
 }
 
 func total_winnings(data []string) (result int) {
-	hands := parse_hands(data)
-	for _, hand := range hands {
-		hand.DetermineType()
-	}
-	hands.SortHands() // if rank worked correctly, then all hands should be in order
-	hands.RankHands()
-	result = hands.CalculateWinnings()
+	result = parse_hands(data).CalculateWinnings()
 
 	return result
 }
