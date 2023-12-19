@@ -9,6 +9,19 @@ const TEST_INPUT_FILE = "test_files/test_input"
 const TEST_INPUT2_FILE = "test_files/test_input2"
 
 func TestTravelNodes(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected := 2
+	actual := travel_nodes(parse_file(data))
+	if expected != actual {
+		t.Errorf("expected: %d, actual: %d\n", expected, actual)
+	}
+
+	data2, _ := utils.String_slice_file(TEST_INPUT2_FILE)
+	expected2 := 6
+	actual2 := travel_nodes(parse_file(data2))
+	if expected != actual {
+		t.Errorf("expected: %d, actual %d\n", expected2, actual2)
+	}
 	t.Skip("Not yet implemented.")
 }
 

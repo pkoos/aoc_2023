@@ -16,13 +16,23 @@ type Node struct {
 
 type Nodes map[string]Node
 
+func starting_nodes(nodes Nodes) (starting []Node) {
+	return starting
+}
+
+func ghost_travel_nodes(instructions string, nodes Nodes) (result int) {
+	
+
+	return result
+}
+
+
 func travel_nodes(instructions string, nodes Nodes) (result int) {
 	var path []string
-	start := nodes["AAA"]
-	current := start
+	current := nodes["AAA"]
 	var next Node
 	end := nodes["ZZZ"]
-	path = append(path, start.Name)
+	path = append(path, current.Name)
 	var finished bool = false
 	for {
 		for idx, direction := range instructions {
@@ -47,7 +57,8 @@ func travel_nodes(instructions string, nodes Nodes) (result int) {
 			break
 		}
 	}
-	fmt.Printf("path: %+v\n", path)
+	_ = path
+	// fmt.Printf("path: %+v\n", path)
 	return result
 }
 
