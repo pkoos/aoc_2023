@@ -21,6 +21,14 @@ var maps = map[string][]int{
 	"temperature-to-humidity": {6, 7},
 	"humidity-to-location": {7, 0}}
 
+	type Seed_location struct {
+		Seed int `json:"seed"`
+		Location int `json:"location"`
+		Path []int `json:"path"`
+	}
+
+	type Seeds []Seed_location
+
 type Farm struct {
 	Seeds []int
 	Maps FarmMaps
@@ -31,6 +39,34 @@ type Farm_map struct {
 	Name string `json:"name"`
 	Destination int `json:"destination"`
 	Mapping map[int]int `json:"mapping"`
+}
+
+func (farm Farm) MapSeeds() (seed_locations Seeds) {
+	for _, seed := range farm.Seeds {
+		location := farm.TraverseMapping(seed)
+		seed_locations = append(seed_locations, location)
+	}
+	return seed_locations
+}
+
+func (farm Farm) TraverseMapping(seed_num int) (location Seed_location) {
+	location.Seed = seed_num
+	var path []int
+	path = append(path, seed_num)
+	source := seed_num
+	destination := -1
+	for _, farm_map := range farm.Maps {
+		destination = farm_map.Mapping[source]
+		if destination == 0 {
+			destination = source
+		}
+		path = append(path, destination)
+		source = destination
+	}
+	location.Path = path
+	location.Location = destination
+
+	return location
 }
 
 func (current_map Farm_map) Equals(other_map Farm_map) (isEqual bool) {
@@ -59,8 +95,8 @@ func parse_map_data(data [] string) (farm_map Farm_map) {
 			}
 		} else {
 			map_str := strings.Split(line, " ")
-			map_source, _ := strconv.Atoi(map_str[0])
-			map_destination, _ := strconv.Atoi(map_str[1])
+			map_source, _ := strconv.Atoi(map_str[1])
+			map_destination, _ := strconv.Atoi(map_str[0])
 			map_range, _ := strconv.Atoi(map_str[2])
 			for i := 0; i < map_range;i++ {
 				farm_map.Mapping[map_source + i] = map_destination + i
@@ -98,14 +134,12 @@ func parse_file(data [] string) (farm Farm) {
 	var map_data []string
 	in_map_data := false
 	for idx, line := range data {
-		// fmt.Printf("%d: '%s'\n", idx, line)
 		if strings.Contains(line, "seeds:") {
 			farm.Seeds = parse_seeds(line)
 			continue
 		}
 
 		if strings.Contains(line, "map:") {
-			// fmt.Printf("We found a map line! '%s'\n", line)
 			in_map_data = true
 		}
 		if in_map_data {
@@ -123,10 +157,19 @@ func parse_file(data [] string) (farm Farm) {
 	return farm
 }
 
-func find_lowest_location(data []string) (location int) {
+func find_lowest_location(data []string) (lowest_location int) {
 	farm := parse_file(data)
-	_= farm
-	return location
+	lowest_location = -1
+	for _, seed_location := range farm.MapSeeds() {
+		if lowest_location < 0 {
+			lowest_location = seed_location.Location
+			continue
+		}
+		if seed_location.Location < lowest_location {
+			lowest_location = seed_location.Location
+		}
+	}
+	return lowest_location
 }
 
 func Run() {
