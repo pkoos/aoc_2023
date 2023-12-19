@@ -220,13 +220,14 @@ func TestParseHands(t *testing.T) {
 
 func TestTotalWinnings(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
-	actual := total_winnings(data, true)
+	part_one := true
+	actual := total_winnings(data, part_one)
 	expected := 765 * 1 + 220 * 2 + 28 * 3 + 684 * 4 + 483 * 5 // 6440
 	if expected != actual {
 		t.Errorf("Part 1 - expected: %d, actual: %d\n", expected, actual)
 	}
 
-	actual = total_winnings(data, false)
+	actual = total_winnings(data, !part_one)
 	expected = 765 * 1 + 684 * 3 + 28 * 2 + 220 * 5 + 483 * 4
 	if expected != actual {
 		t.Errorf("Part 2 - expected: %d, actual: %d\n", expected, actual)
