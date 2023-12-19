@@ -67,7 +67,6 @@ type Cards []Card
 func calculate_scratchcards(data []string) (num_scratchcards int) {
 	results := make(map[int]int)
 	total_cards := len(data)
-	fmt.Printf("total_cards: %d\n\n", total_cards)
 	for _, line := range data {
 		card := parse_scratchcard_input(line)
 		card.CalculateMatches() // this gets the number of matches

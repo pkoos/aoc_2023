@@ -7,6 +7,7 @@ import (
 	"aoc_2023/four"
 	"aoc_2023/five"
 	"aoc_2023/six"
+	"aoc_2023/seven"
 )
 
 func main() {
@@ -16,4 +17,5 @@ func main() {
 	four.Run()
 	five.Run()
 	six.Run()
+	seven.Run()
 }
