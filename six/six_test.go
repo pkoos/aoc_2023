@@ -4,6 +4,14 @@ import (
 	"testing"
 )
 
-func TestTheThing(t *testing.T) {
-	t.Skip("Not yet implemented")
+func TestRacePossibilities(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
+func TestParseRaces(t *testing.T) {
+	t.Skip("Not yet implemented.")
+}
+
+func TestProductWinningPossibilities(t *testing.T) {
+	t.Skip("Not yet implemented.")
 }
