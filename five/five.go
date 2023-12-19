@@ -2,6 +2,7 @@ package five
 
 import (
 	"fmt"
+	"reflect"
 	"strconv"
 	"strings"
 	"unicode"
@@ -9,11 +10,66 @@ import (
 	"aoc_2023/utils"
 )
 
+const INPUT = "five/input"
+
+var maps = map[string][]int{
+	"seed-to-soil": {1, 2},
+	"soil-to-fertilizer": {2, 3},
+	"fertilizer-to-water": {3, 4},
+	"water-to-light": {4, 5},
+	"light-to-temperature": {5, 6},
+	"temperature-to-humidity": {6, 7},
+	"humidity-to-location": {7, 0}}
+
 type Farm struct {
 	Seeds []int
+	Maps FarmMaps
 }
 
-const INPUT = "five/input"
+type Farm_map struct {
+	ID int `json:"id"`
+	Name string `json:"name"`
+	Destination int `json:"destination"`
+	Mapping map[int]int `json:"mapping"`
+}
+
+func (current_map Farm_map) Equals(other_map Farm_map) (isEqual bool) {
+	ids_equal := current_map.ID == other_map.ID
+	names_equal := current_map.Name == other_map.Name
+	destinations_equal := current_map.Destination == other_map.Destination
+	mappings_equal := reflect.DeepEqual(current_map.Mapping, other_map.Mapping)
+
+	isEqual = ids_equal && names_equal && destinations_equal && mappings_equal
+	return isEqual
+}
+
+type FarmMaps []Farm_map
+
+func parse_map_data(data [] string) (farm_map Farm_map) {
+	farm_map.Mapping = make(map[int]int)
+	for idx, line := range data {
+		if idx == 0 {
+			for key, value := range maps {
+				if strings.Contains(line, key) {
+					farm_map.ID = value[0]
+					farm_map.Destination = value[1]
+					farm_map.Name = key
+					break
+				}
+			}
+		} else {
+			map_str := strings.Split(line, " ")
+			map_source, _ := strconv.Atoi(map_str[0])
+			map_destination, _ := strconv.Atoi(map_str[1])
+			map_range, _ := strconv.Atoi(map_str[2])
+			for i := 0; i < map_range;i++ {
+				farm_map.Mapping[map_source + i] = map_destination + i
+			}
+		}
+	}
+
+	return farm_map
+}
 
 func parse_seeds(line string) (seeds []int) {
 	var seed_str string
@@ -39,10 +95,29 @@ func parse_seeds(line string) (seeds []int) {
 }
 
 func parse_file(data [] string) (farm Farm) {
+	var map_data []string
+	in_map_data := false
 	for idx, line := range data {
-		fmt.Printf("%d: ", idx)
+		// fmt.Printf("%d: '%s'\n", idx, line)
 		if strings.Contains(line, "seeds:") {
 			farm.Seeds = parse_seeds(line)
+			continue
+		}
+
+		if strings.Contains(line, "map:") {
+			// fmt.Printf("We found a map line! '%s'\n", line)
+			in_map_data = true
+		}
+		if in_map_data {
+			if line == "" || idx + 1 == len(data) {
+				farm_map := parse_map_data(map_data)
+				farm.Maps = append(farm.Maps, farm_map)
+				in_map_data = false
+				map_data = nil
+			} else {
+				map_data = append(map_data, line)
+			}
+			
 		}
 	}
 	return farm
