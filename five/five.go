@@ -37,8 +37,10 @@ type Farm struct {
 type Farm_map struct {
 	ID int `json:"id"`
 	Name string `json:"name"`
-	Destination int `json:"destination"`
-	Mapping map[int]int `json:"mapping"`
+	Next int `json:"next"`
+	Destinations []int `json:"destination"`
+	Sources []int `json:"source"`
+	Ranges []int `json:"range"`
 }
 
 func (farm Farm) MapSeeds() (seed_locations Seeds) {
@@ -54,14 +56,19 @@ func (farm Farm) TraverseMapping(seed_num int) (location Seed_location) {
 	var path []int
 	path = append(path, seed_num)
 	source := seed_num
+	_ = source
 	destination := -1
-	for _, farm_map := range farm.Maps {
-		destination = farm_map.Mapping[source]
-		if destination == 0 {
-			destination = source
-		}
-		path = append(path, destination)
-		source = destination
+	for idx, farm_map := range farm.Maps {
+		_ = idx
+		_ = farm_map
+		
+		// need to update this function to use Sources, Destinations, Ranges
+		// destination = farm_map.Mapping[source]
+		// if destination == 0 {
+		// 	destination = source
+		// }
+		// path = append(path, destination)
+		// source = destination
 	}
 	location.Path = path
 	location.Location = destination
@@ -70,25 +77,39 @@ func (farm Farm) TraverseMapping(seed_num int) (location Seed_location) {
 }
 
 func (current_map Farm_map) Equals(other_map Farm_map) (isEqual bool) {
-	ids_equal := current_map.ID == other_map.ID
-	names_equal := current_map.Name == other_map.Name
-	destinations_equal := current_map.Destination == other_map.Destination
-	mappings_equal := reflect.DeepEqual(current_map.Mapping, other_map.Mapping)
+	isEqual = true // start at true, and hope to fall out the other end still true
+	// IDs
+	isEqual = isEqual && current_map.ID == other_map.ID
+	// Names
+	isEqual = isEqual && current_map.Name == other_map.Name
+	// Next
+	isEqual = isEqual && current_map.Next == other_map.Next
+	// Destinations
+	isEqual = isEqual && reflect.DeepEqual(current_map.Destinations, other_map.Destinations)
+	// Sources
+	isEqual = isEqual && reflect.DeepEqual(current_map.Sources, other_map.Sources)
+	// Ranges
+	isEqual = isEqual && reflect.DeepEqual(current_map.Ranges, other_map.Ranges)
+	// // names_equal := current_map.Name == other_map.Name
+	// // next_equal := current_map.Next == other_map.Next
+	// dest_equal := reflect.DeepEqual(current_map.Destinations, other_map.Destinations)
+	// src_equal := reflect.DeepEqual(current_map.Sources, other_map.Sources)
+	// range_equal := reflect.DeepEqual(current_map.Ranges, other_map.Ranges)
 
-	isEqual = ids_equal && names_equal && destinations_equal && mappings_equal
+	// isEqual = ids_equal && names_equal && destinations_equal && mappings_equal
 	return isEqual
 }
 
 type FarmMaps []Farm_map
 
 func parse_map_data(data [] string) (farm_map Farm_map) {
-	farm_map.Mapping = make(map[int]int)
+	// farm_map.Mapping = make(map[int]int)
 	for idx, line := range data {
 		if idx == 0 {
 			for key, value := range maps {
 				if strings.Contains(line, key) {
 					farm_map.ID = value[0]
-					farm_map.Destination = value[1]
+					farm_map.Next = value[1]
 					farm_map.Name = key
 					break
 				}
@@ -98,9 +119,12 @@ func parse_map_data(data [] string) (farm_map Farm_map) {
 			map_source, _ := strconv.Atoi(map_str[1])
 			map_destination, _ := strconv.Atoi(map_str[0])
 			map_range, _ := strconv.Atoi(map_str[2])
-			for i := 0; i < map_range;i++ {
-				farm_map.Mapping[map_source + i] = map_destination + i
-			}
+			farm_map.Sources = append(farm_map.Sources, map_source)
+			farm_map.Destinations = append(farm_map.Destinations, map_destination)
+			farm_map.Ranges = append(farm_map.Ranges, map_range)
+			// for i := 0; i < map_range;i++ {
+			// 	farm_map.Mapping[map_source + i] = map_destination + i
+			// }
 		}
 	}
 

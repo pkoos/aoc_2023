@@ -28,10 +28,11 @@ func TestParseMapData(t *testing.T) {
 	expected := Farm_map{
 		ID: 7,
 		Name: "humidity-to-location",
-		Destination: 0,
-		Mapping: map[int]int{
-			3:11, 4:12, 5:13, 6:14,
-			8:5, 9:6, 10:7, 11:8, 12:9}}
+		Next: 0,
+		Destinations: []int{11, 5},
+		Sources: []int{3, 8},
+		Ranges: []int{4, 5},
+	}
 	
 	if !actual.Equals(expected) {
 		t.Errorf("expected: %+v, actual: %+v\n", expected, actual)
