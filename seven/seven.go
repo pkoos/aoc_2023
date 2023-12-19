@@ -132,7 +132,10 @@ func (first Hand) Compare(second Hand) (result int) {
 }
 
 func (h Hands) RankHands() {
-	// stuff and things
+	for i := range h {
+		var hand *Hand = &h[i]
+		hand.Rank = i + 1
+	}
 }
 
 func (h Hands) CalculateWinnings() (result int) {

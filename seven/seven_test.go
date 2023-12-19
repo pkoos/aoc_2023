@@ -10,6 +10,27 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestRankHands(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expecteds := Hands{
+		{"32T3K", 765, 1, HandType{"One pair", 6}},
+		{"KTJJT", 220, 2, HandType{"Two pair", 5}},
+		{"KK677", 28,  3, HandType{"Two pair", 5}},
+		{"T55J5", 684, 4, HandType{"Three of a kind", 4}},
+		{"QQQJA", 483, 5, HandType{"Three of a kind", 4}},
+	}
+	hands := parse_hands(data)
+	hands.DetermineHandTypes()
+	hands.SortHands()
+	hands.RankHands()
+	for idx, actual := range hands {
+		expected :=expecteds[idx]
+		if !reflect.DeepEqual(actual, expected) {
+			t.Errorf("%d: expected: %+v, actual: %+v", idx, expected, actual)
+		}
+	}
+}
+
 func TestSortHands(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expecteds := Hands{
