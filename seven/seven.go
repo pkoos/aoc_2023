@@ -34,9 +34,39 @@ func (h *Hand) DetermineType(part_one bool) {
 			}
 		}
 	}
+	unique_cards := len(card_count)
+
 	if !part_one {
-		if jokers > 0 { max_cards += jokers }
+		if jokers > 0 {
+			switch jokers {
+			case 1:
+				switch unique_cards {
+				case 5: h.Type = types[1]; return
+				case 4: h.Type = types[3]; return
+				case 3: if max_cards == 3 {
+					h.Type = types[5]; return
+				} else {
+					h.Type = types[4]; return
+				}
+				case 2: h.Type = types[6]; return
+				}
+			case 2:
+				switch unique_cards {
+				case 4: h.Type = types[3]; return
+				case 3: h.Type = types[5]; return
+				case 2: h.Type = types[6]; return
+				}
+			case 3:
+				switch unique_cards {
+				case 3: h.Type = types[5]; return
+				case 2: h.Type = types[6]; return
+				}
+			case 4: h.Type = types[6]; return
+			case 5: h.Type = types[6]; return
+			}
+		}
 	}
+
 	if max_cards == 5 {
 		h.Type = types[6]
 		return
@@ -46,20 +76,50 @@ func (h *Hand) DetermineType(part_one bool) {
 		return
 	}
 	if max_cards == 3 {
-		if len(card_count) == 2 {
-			h.Type = types[4]
+		if part_one {
+			if len(card_count) == 2 {
+				h.Type = types[4]
+				return
+			}
+			h.Type = types[3]
 			return
 		}
-		h.Type = types[3]
-		return
+		if jokers > 0 {
+			if len(card_count) == 3 {
+				h.Type = types[4]
+				return
+			}
+			h.Type = types[3]
+			return
+		} else {
+			if len(card_count) == 2 {
+				h.Type = types[4]
+				return
+			}
+			h.Type = types[3]
+			return
+		}
 	}
 	if max_cards == 2 {
-		if len(card_count) == 3 {
-			h.Type = types[2]
+		if part_one {
+			if len(card_count) == 3 {
+				h.Type = types[2]
+				return
+			}
+			h.Type = types[1]
 			return
 		}
-		h.Type = types[1]
-		return
+		if jokers > 0 {
+			h.Type = types[1]
+			return
+		} else {
+			if len(card_count) == 3 {
+				h.Type = types[2]
+				return
+			}
+			h.Type = types[1]
+			return
+		}
 	}
 	h.Type = types[0]
 }
@@ -130,13 +190,15 @@ func (h Hands) DetermineHandTypes(part_one bool) {
 }
 
 func (h Hands) SortHands(part_one bool) { // this needs to be tested
-	var sort_func func(Hand, Hand) int
+	// var sort_func func(Hand, Hand) int
 	if part_one {
-		sort_func = compare_hands
+		slices.SortFunc[Hands](h, compare_hands)
+		// sort_func = compare_hands
 	} else {
-		sort_func = compare_hands_jokers
+		slices.SortFunc[Hands](h, compare_hands_jokers)
+		// sort_func = compare_hands_jokers
 	}
-	slices.SortFunc[Hands](h, sort_func)
+	// slices.SortFunc[Hands](h, sort_func)
 	
 }
 
@@ -180,8 +242,9 @@ func (h Hands) CalculateWinnings(part_one bool) (result int) {
 		h.DetermineHandTypes(part_one)
 		h.SortHands(part_one)
 		h.RankHands()
+
 		for _, hand := range h {
-			result += hand.Rank * hand.Bid
+			result += (hand.Rank * hand.Bid)
 		}	
 
 	return result
@@ -212,11 +275,11 @@ func parse_hands(data []string) (result Hands) {
 }
 
 func total_winnings(data []string, part_one bool) (result int) {
-	if part_one {
-		result = parse_hands(data).CalculateWinnings(true)
-	} else {
-		result = parse_hands(data).CalculateWinnings(false)
-	}
+	// if part_one {
+	// 	result = parse_hands(data).CalculateWinnings(part_one)
+	// } else {
+		result = parse_hands(data).CalculateWinnings(part_one)
+	// }
 
 
 	return result

@@ -141,7 +141,7 @@ func TestDetermineHandTypes(t *testing.T) {
 		actual := hand.Type
 
 		if !reflect.DeepEqual(actual, expected) {
-			t.Errorf("Part 2 - %d: expected: %+v, actual: %+v\n", idx, expected, actual)
+			t.Errorf("Part 2 - %d: Cards: %s, expected: %+v, actual: %+v\n", idx, hand.Cards, expected, actual)
 		}
 	}
 }
