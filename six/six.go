@@ -33,7 +33,7 @@ func (r Race) Equals(r2 Race) (isEqual bool) {
 
 type Races []Race
 
-func parse_line(line string) (results []int) {
+func parse_line(line string, part_one bool) (results []int) {
 	var val_str string
 	var found bool
 	for idx, char := range line {
@@ -46,7 +46,7 @@ func parse_line(line string) (results []int) {
 				results = append(results, value)
 			}
 		} else {
-			if found {
+			if part_one && found {
 				value, _ := strconv.Atoi(val_str)
 				results = append(results, value)
 				found = false
@@ -57,15 +57,15 @@ func parse_line(line string) (results []int) {
 	return results
 }
 
-func parse_races(data []string) (races Races) {
+func parse_races(data []string, part_one bool) (races Races) {
 	var times []int
 	var distances []int
 	for _, line := range data {
 		if strings.Contains(line, "Time:") {
-			times = parse_line(line)
+			times = parse_line(line, part_one)
 		}
 		if strings.Contains(line, "Distance:") {
-			distances = parse_line(line)
+			distances = parse_line(line, part_one)
 		}
 	}
 
@@ -80,8 +80,8 @@ func parse_races(data []string) (races Races) {
 	return races
 }
 
-func product_winning_possibilities(data []string) (result int) {
-	races := parse_races(data)
+func product_winning_possibilities(data []string, part_one bool) (result int) {
+	races := parse_races(data, part_one)
 	for _, race := range races {
 		if result == 0 {
 			result += race.Possibilities()
@@ -98,7 +98,9 @@ func Run() {
 		panic(err)
 	}
 	fmt.Println("==== Day 6 - Part 1 ====")
-	part_one := product_winning_possibilities(data)
+	part_one := product_winning_possibilities(data, true)
 	fmt.Printf("Answer: %d\n", part_one)
 	fmt.Println("==== Day 6 - Part 2 ====")
+	part_two := product_winning_possibilities(data, false)
+	fmt.Printf("Answer: %d\n", part_two)
 }
