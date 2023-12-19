@@ -17,16 +17,25 @@ type Hand struct {
 	Type HandType
 }
 
-func (h *Hand) DetermineType() {
+func (h *Hand) DetermineType(part_one bool) {
 	card_count := make(map[string]int)
 	for _, card := range h.Cards {
 		card_count[string(card)] ++
 	}
 	var max_cards int
-	for _, count := range card_count {
+	var jokers int
+	for card, count := range card_count {
 		if count > max_cards {
 			max_cards = count
 		}
+		if !part_one {
+			if card == "J" {
+				jokers = count
+			}
+		}
+	}
+	if !part_one {
+		if jokers > 0 { max_cards += jokers }
 	}
 	if max_cards == 5 {
 		h.Type = types[6]
@@ -68,7 +77,7 @@ var types HandTypes = HandTypes{
 	{"Two pair", 5},
 	{"Three of a kind", 4},
 	{"Full House", 3},
-	{"Four pair", 2},
+	{"Four of a kind", 2},
 	{"Five of a kind", 1},
 }
 
@@ -95,20 +104,43 @@ var cards map[string]CardType = map[string]CardType{
 	"2": {"2", 13},
 }
 
+var cards_joker map[string]CardType = map[string]CardType{
+	"A": {"A", 1},
+	"K": {"K", 2},
+	"Q": {"Q", 3},
+	"T": {"T", 5},
+	"9": {"9", 6},
+	"8": {"8", 7},
+	"7": {"7", 8},
+	"6": {"6", 9},
+	"5": {"5", 10},
+	"4": {"4", 11},
+	"3": {"3", 12},
+	"2": {"2", 13},
+	"J": {"J", 14},
+}
+
 type Hands []Hand
 
-func (h Hands) DetermineHandTypes() {
+func (h Hands) DetermineHandTypes(part_one bool) {
 	for idx := range h {
 		var hand *Hand= &h[idx]
-		hand.DetermineType()
+		hand.DetermineType(part_one)
 	}
 }
 
-func (h Hands) SortHands() { // this needs to be tested
-	slices.SortFunc[Hands](h, compare_hands)
+func (h Hands) SortHands(part_one bool) { // this needs to be tested
+	var sort_func func(Hand, Hand) int
+	if part_one {
+		sort_func = compare_hands
+	} else {
+		sort_func = compare_hands_jokers
+	}
+	slices.SortFunc[Hands](h, sort_func)
+	
 }
 
-func (first Hand) Compare(second Hand) (result int) {
+func (first Hand) Compare(second Hand, part_one bool) (result int) {
 	
 	// first hand is worse than second hand
 	if first.Type.Rank > second.Type.Rank { return -1 }
@@ -118,9 +150,15 @@ func (first Hand) Compare(second Hand) (result int) {
 	
 	var first_type CardType
 	var second_type CardType
+	var working_cards map[string]CardType
+	if part_one {
+		working_cards = cards
+	} else {
+		working_cards = cards_joker
+	}
 	for i := range first.Cards {
-		first_type = cards[string(first.Cards[i])]
-		second_type = cards[string(second.Cards[i])]
+		first_type = working_cards[string(first.Cards[i])]
+		second_type = working_cards[string(second.Cards[i])]
 		
 		// first card is worse than second card
 		if first_type.Rank > second_type.Rank { return -1 }
@@ -138,18 +176,23 @@ func (h Hands) RankHands() {
 	}
 }
 
-func (h Hands) CalculateWinnings() (result int) {
-	h.DetermineHandTypes()
-	h.SortHands()
-	h.RankHands()
-	for _, hand := range h {
-		result += hand.Rank * hand.Bid
-	}
+func (h Hands) CalculateWinnings(part_one bool) (result int) {
+		h.DetermineHandTypes(part_one)
+		h.SortHands(part_one)
+		h.RankHands()
+		for _, hand := range h {
+			result += hand.Rank * hand.Bid
+		}	
+
 	return result
 }
 
 func compare_hands(first Hand, second Hand) (result int) {
-	return first.Compare(second)
+	return first.Compare(second, true)
+}
+
+func compare_hands_jokers(first Hand, second Hand) (result int) {
+	return first.Compare(second, false)
 }
 
 func parse_hand(line string) (result Hand) {
@@ -168,8 +211,13 @@ func parse_hands(data []string) (result Hands) {
 	return result
 }
 
-func total_winnings(data []string) (result int) {
-	result = parse_hands(data).CalculateWinnings()
+func total_winnings(data []string, part_one bool) (result int) {
+	if part_one {
+		result = parse_hands(data).CalculateWinnings(true)
+	} else {
+		result = parse_hands(data).CalculateWinnings(false)
+	}
+
 
 	return result
 }
@@ -179,9 +227,12 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
-	part_one := total_winnings(data)
+	part_one := total_winnings(data, true)
 	fmt.Println("==== Day 7 - Part 1 ====")
 	fmt.Printf("Answer: %d\n", part_one)
 
+	part_two := total_winnings(data, false)
 	fmt.Println("==== Day 7 - Part 2 ====")
+	fmt.Printf("Answer: %d\n", part_two)
+
 }
