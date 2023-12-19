@@ -6,25 +6,66 @@ import (
 	"testing"
 )
 const TEST_INPUT_FILE = "test_files/test_input"
-const TEST_INPUT2_FILE = "test/files/test_input2"
+const TEST_INPUT2_FILE = "test_files/test_input2"
 
 func TestTravelNodes(t *testing.T) {
 	t.Skip("Not yet implemented.")
+}
+
+func TestParseNode(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expected_nodes := []Node{
+		{"AAA", "BBB", "CCC"},
+		{"BBB", "DDD", "EEE"},
+		{"CCC", "ZZZ", "GGG"},
+		{"DDD", "DDD", "DDD"},
+		{"EEE", "EEE", "EEE"},
+		{"GGG", "GGG", "GGG"},
+		{"ZZZ", "ZZZ", "ZZZ"},
+	}
+
+	for idx, line := range data {
+		if idx < 2 { continue }
+		actual := parse_node(line)
+		expected := expected_nodes[idx - 2]
+		if !reflect.DeepEqual(actual, expected){
+			t.Errorf("%d: expected: %+v, actual: %+v\n", (idx - 2), expected, actual)
+		}
+	}
+
+	data2, _ := utils.String_slice_file(TEST_INPUT2_FILE)
+	expected_nodes2 := []Node{
+		{"AAA", "BBB", "BBB"},
+		{"BBB", "AAA", "ZZZ"},
+		{"ZZZ", "ZZZ", "ZZZ"},
+	}
+
+	for idx, line := range data2 {
+		if idx < 2 { continue }
+		actual := parse_node(line)
+		expected := expected_nodes2[idx - 2]
+		if !reflect.DeepEqual(actual,expected) {
+			t.Errorf("%d: expected: %+v, actual: %+v\n", (idx - 2), expected, actual)
+		}
+	}
 }
 
 func TestParseFile(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expected_instructions := "RL"
 	expected_nodes := Nodes{
-		"AAA":{"BBB", "CCC"},
-		"BBB":{"DDD", "EEE"},
-		"CCC":{"ZZZ", "GGG"},
-		"DDD":{"DDD", "DDD"},
-		"EEE":{"EEE", "EEE"},
-		"GGG":{"GGG", "GGG"},
-		"ZZZ":{"ZZZ", "ZZZ"},
+		"AAA":{"AAA", "BBB", "CCC"},
+		"BBB":{"BBB", "DDD", "EEE"},
+		"CCC":{"CCC", "ZZZ", "GGG"},
+		"DDD":{"DDD", "DDD", "DDD"},
+		"EEE":{"EEE", "EEE", "EEE"},
+		"GGG":{"GGG", "GGG", "GGG"},
+		"ZZZ":{"ZZZ", "ZZZ", "ZZZ"},
 	}
-	actual_instructions, actual_nodes := parse_file(data)
+	var actual_instructions string
+	var actual_nodes Nodes = make(Nodes)
+	actual_instructions, actual_nodes = parse_file(data)
+	
 	if expected_instructions != actual_instructions {
 		t.Errorf("instructions - expected: %s, actual: %s\n", expected_instructions, actual_instructions)
 	}
@@ -35,11 +76,14 @@ func TestParseFile(t *testing.T) {
 	data2, _ := utils.String_slice_file(TEST_INPUT2_FILE)
 	expected_instructions2 := "LLR"
 	expected_nodes2 := Nodes{
-		"AAA":{"BBB", "BBB"},
-		"BBB":{"AAA", "ZZZ"},
-		"ZZZ":{"ZZZ", "ZZZ"},
+		"AAA":{"AAA", "BBB", "BBB"},
+		"BBB":{"BBB", "AAA", "ZZZ"},
+		"ZZZ":{"ZZZ", "ZZZ", "ZZZ"},
 	}
-	actual_instructions2, actual_nodes2 := parse_file(data2)
+
+	var actual_instructions2 string
+	var actual_nodes2 Nodes = make(Nodes)
+	actual_instructions2, actual_nodes2 = parse_file(data2)
 	if expected_instructions2 != actual_instructions2 {
 		t.Errorf("instructions - expected: %s, actual: %s\n", expected_instructions2, actual_instructions2)
 	}

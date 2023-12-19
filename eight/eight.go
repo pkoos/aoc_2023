@@ -3,11 +3,13 @@ package eight
 import (
 	"aoc_2023/utils"
 	"fmt"
+	"strings"
 )
 
 const INPUT = "eight/input"
 
 type Node struct {
+	Name string
 	L string
 	R string
 }
@@ -18,8 +20,27 @@ func travel_nodes(instructions string, nodes Nodes) (result int) {
 	return result
 }
 
-func parse_file(data []string) (instructions string, nodes Nodes) {
+func parse_node(line string) (node Node) {
+	line_data := strings.Split(line, "=")
+	node.Name = strings.TrimSpace(line_data[0])
+	node_data := strings.Split(line_data[1], ",")
+	node.L = strings.TrimSpace(node_data[0][2:])
+	node.R = strings.TrimSpace(node_data[1][:len(node_data[1]) - 1])
 
+	return node
+}
+
+func parse_file(data []string) (instructions string, nodes Nodes) {
+	nodes = make(Nodes)
+	for idx, line := range data {
+		if idx == 0 {
+			instructions = line
+			continue
+		}
+		if line == "" { continue }
+		node := parse_node(line)
+		nodes[node.Name] = node
+	}
 	return instructions, nodes
 }
 
