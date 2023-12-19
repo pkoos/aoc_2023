@@ -17,6 +17,37 @@ type Node struct {
 type Nodes map[string]Node
 
 func travel_nodes(instructions string, nodes Nodes) (result int) {
+	var path []string
+	start := nodes["AAA"]
+	current := start
+	var next Node
+	end := nodes["ZZZ"]
+	path = append(path, start.Name)
+	var finished bool = false
+	for {
+		for idx, direction := range instructions {
+			_ = idx
+			result ++
+			if direction == rune('L') {
+				next = nodes[current.L]
+			} else if direction == rune('R') {
+				next = nodes[current.R]
+			}
+			
+			current = next
+			path = append(path, current.Name)
+			
+			if next == end {
+				finished = true
+				break
+			}
+
+		}
+		if finished {
+			break
+		}
+	}
+	fmt.Printf("path: %+v\n", path)
 	return result
 }
 
