@@ -80,7 +80,6 @@ func calculate_scratchcards(data []string) (num_scratchcards int) {
 				}
 			}
 		}
-		fmt.Printf("results[%d]: %d\n", card.ID, results[card.ID])
 	}
 	for _, val := range results {
 		num_scratchcards += val
