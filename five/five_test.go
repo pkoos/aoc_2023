@@ -54,6 +54,25 @@ func TestParseFile(t *testing.T) {
 	t.Skip("Not yet implemented")
 }
 
+func TestLowestLocationRange(t *testing.T) {
+	data, _ := utils.String_slice_file("input")
+	actual := find_lowest_location_seedrange(data)
+	expected := 47909639
+	if actual != expected {
+		t.Errorf("expected: %d, actual: %d\n", expected, actual)
+	}
+}
+
+
+func TestFindLowestLocationSeedrange(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	actual := find_lowest_location_seedrange(data)
+	expected := 46
+	if expected != actual {
+		t.Errorf("expected: %d, actual: %d\n", expected, actual)
+	}
+}
+
 func TestFindLowestLocation(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	actual := find_lowest_location(data)
