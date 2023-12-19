@@ -10,13 +10,33 @@ import (
 
 const TEST_INPUT_FILE = "test_files/test_input"
 
+func TestSortHands(t *testing.T) {
+	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
+	expecteds := Hands{
+		{"32T3K", 765, 0, HandType{"One pair", 6}},
+		{"KTJJT", 220, 0, HandType{"Two pair", 5}},
+		{"KK677", 28,  0, HandType{"Two pair", 5}},
+		{"T55J5", 684, 0, HandType{"Three of a kind", 4}},
+		{"QQQJA", 483, 0, HandType{"Three of a kind", 4}},
+	}
+	hands := parse_hands(data)
+	hands.DetermineHandTypes()
+	hands.SortHands()
+	for idx, actual := range hands {
+		expected :=expecteds[idx]
+		if !reflect.DeepEqual(actual, expected) {
+			t.Errorf("%d: expected: %+v, actual: %+v", idx, expected, actual)
+		}
+	}
+}
+
 func TestDetermineHandTypes(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expected_types  := HandTypes{
-		{"One pair", 2},
+		{"One pair", 6},
 		{"Three of a kind", 4},
-		{"Two pair", 3},
-		{"Two pair", 3},
+		{"Two pair", 5},
+		{"Two pair", 5},
 		{"Three of a kind", 4},
 	}
 	hands := parse_hands(data)
@@ -34,10 +54,10 @@ func TestDetermineHandTypes(t *testing.T) {
 func TestDetermineType(t *testing.T) {
 	data, _ := utils.String_slice_file(TEST_INPUT_FILE)
 	expected_types  := HandTypes{
-		{"One pair", 2},
+		{"One pair", 6},
 		{"Three of a kind", 4},
-		{"Two pair", 3},
-		{"Two pair", 3},
+		{"Two pair", 5},
+		{"Two pair", 5},
 		{"Three of a kind", 4},
 	}
 	for idx, line := range data {

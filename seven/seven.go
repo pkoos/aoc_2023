@@ -2,7 +2,6 @@ package seven
 
 import (
 	"aoc_2023/utils"
-	"cmp"
 	"fmt"
 	"slices"
 	"strconv"
@@ -64,15 +63,37 @@ type HandType struct {
 type HandTypes []HandType
 
 var types HandTypes = HandTypes{
-	{"High card", 1},
-	{"One pair", 2},
-	{"Two pair", 3},
+	{"High card", 7},
+	{"One pair", 6},
+	{"Two pair", 5},
 	{"Three of a kind", 4},
-	{"Full House", 5},
-	{"Four pair", 6},
-	{"Five of a kind", 7},
+	{"Full House", 3},
+	{"Four pair", 2},
+	{"Five of a kind", 1},
 }
 
+type CardType struct {
+	Face string
+	Rank int
+}
+
+type CardTypes []CardType
+
+var cards map[string]CardType = map[string]CardType{
+	"A": {"A", 1},
+	"K": {"K", 2},
+	"Q": {"Q", 3},
+	"J": {"J", 4},
+	"T": {"T", 5},
+	"9": {"9", 6},
+	"8": {"8", 7},
+	"7": {"7", 8},
+	"6": {"6", 9},
+	"5": {"5", 10},
+	"4": {"4", 11},
+	"3": {"3", 12},
+	"2": {"2", 13},
+}
 
 type Hands []Hand
 
@@ -84,13 +105,30 @@ func (h Hands) DetermineHandTypes() {
 }
 
 func (h Hands) SortHands() { // this needs to be tested
-	slices.SortFunc[Hands](h, func(a, b Hand) (n int) {
-		if n = cmp.Compare(a.Type.Rank, b.Type.Rank); n != 0 {
-			return n
-		}
-		return cmp.Compare(a.Cards, b.Cards)
+	slices.SortFunc[Hands](h, compare_hands)
+}
 
-	})
+func (first Hand) Compare(second Hand) (result int) {
+	
+	// first hand is worse than second hand
+	if first.Type.Rank > second.Type.Rank { return -1 }
+	
+	// first hand is better than second hand
+	if first.Type.Rank < second.Type.Rank { return 1 }
+	
+	var first_type CardType
+	var second_type CardType
+	for i := range first.Cards {
+		first_type = cards[string(first.Cards[i])]
+		second_type = cards[string(second.Cards[i])]
+		
+		// first card is worse than second card
+		if first_type.Rank > second_type.Rank { return -1 }
+		
+		// first card is better than second card
+		if first_type.Rank < second_type.Rank { return 1 }
+	}
+	return result
 }
 
 func (h Hands) RankHands() {
@@ -99,6 +137,10 @@ func (h Hands) RankHands() {
 
 func (h Hands) CalculateWinnings() (result int) {
 	return result
+}
+
+func compare_hands(first Hand, second Hand) (result int) {
+	return first.Compare(second)
 }
 
 func parse_hand(line string) (result Hand) {
