@@ -56,11 +56,23 @@ func (farm Farm) TraverseMapping(seed_num int) (location Seed_location) {
 	var path []int
 	path = append(path, seed_num)
 	source := seed_num
-	_ = source
 	destination := -1
+Next_Map:
 	for idx, farm_map := range farm.Maps {
-		_ = idx
-		_ = farm_map
+		_ = idx // not sure if I need this yet
+		for i, src := range farm_map.Sources {
+			rng := farm_map.Ranges[i]
+			src_high := src + rng - 1
+			if source >= src && source <= src_high {
+				dest := farm_map.Destinations[i]
+				diff := source - src
+				destination = dest + diff
+				path = append(path, destination)
+				source = destination
+				continue Next_Map
+			}
+		}
+	}
 		
 		// need to update this function to use Sources, Destinations, Ranges
 		// destination = farm_map.Mapping[source]
@@ -69,8 +81,8 @@ func (farm Farm) TraverseMapping(seed_num int) (location Seed_location) {
 		// }
 		// path = append(path, destination)
 		// source = destination
-	}
-	location.Path = path
+
+		location.Path = path
 	location.Location = destination
 
 	return location
